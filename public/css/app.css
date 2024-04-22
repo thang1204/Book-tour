@@ -1,0 +1,26 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.btn-login{
+    background-color: #008768;
+    border-radius: 8px;
+    border: none;
+}
+.btn-login:hover {
+    background-color: #09e2af;
+}
+
+.btn-icon{
+    border: 1px solid #ccc;
+    width: 130px;
+    height: 45px;
+    border-radius: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.hr-line{
+    width: 100%;
+}

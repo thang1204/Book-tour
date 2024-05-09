@@ -15,7 +15,7 @@
                         <p>Time: {{ $tour->time }}</p>
                         <p>Price: {{ $tour->price }}$</p>
                     </div>
-                    <a class="" href="">Book now</a>
+                    <button class="btn-book-now" data-url="{{ route('bookings.store') }}" data-tour-id="{{ $tour->id }}">Book now {{ $tour->id }}</button>
                 </div>
             @endforeach
         </div>
@@ -42,6 +42,29 @@
         delay: 4000,
         disableOnInteraction: false,
     },
+    });
+
+   
+</script>
+<script>
+    $(document).ready(function() {
+        $('.btn-book-now').click(function(event) {
+            event.preventDefault();
+            const url = $(this).attr('data-url');
+            const tourId = $(this).data('tour-id');
+            $.ajax({
+                url: url,
+                data: {
+                    tour_id: tourId,
+                },
+                success: function(response) {
+                    window.location.href = '/bookings';
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
     });
 </script>
 @endsection

@@ -2,23 +2,22 @@
 
 namespace App\Models;
 
-use App\Models\Booking;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Tour extends Model
+class Profile extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'description',
-        'time',
-        'price',
+        'user_id',
+        'full_name',
+        'phone_number',
     ];
 
-    public function bookings()
+    public function user()
     {
-        return $this->hasMany(Booking::class);
+        return $this->belongsTo(User::class);
     }
 }

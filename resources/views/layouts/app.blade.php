@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{{ asset('/images/logo-tour.jpg') }}">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -18,7 +19,8 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <p class="m-0 text-tour">Book a tour</p>
+                <img src="{{ asset('/images/logo-tour.jpg') }}" alt="" class="logo-tour me-3">
+                <p class="m-0 text-tour">WinND</p>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -72,9 +74,31 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="">
             @yield('content')
         </main>
+        <footer>
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="{{ asset('/images/logo-tour.jpg') }}" class="logo-tour" alt="Logo">
+                </div>
+                <div class="footer-links d-flex justify-content-between align-items-center gap-3">
+                        <a href="#">Home</a>
+                        <a href="#">About Us</a>
+                        <a href="#">Services</a>
+                        <a href="#">Contact</a>
+                </div>
+                <div class="footer-social d-flex justify-content-between align-items-center gap-3">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            {{-- <div class="footer-bottom text-align-center">
+                <p>&copy; 2024 Your Company. All rights reserved.</p>
+            </div> --}}
+        </footer>
     </div>
 </body>
 </html>

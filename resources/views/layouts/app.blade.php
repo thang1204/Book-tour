@@ -13,10 +13,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-    <div id="app">
+    <div style="height: 91vh;">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <img src="{{ asset('/images/logo-tour.jpg') }}" alt="" class="logo-tour me-3">
@@ -77,28 +77,29 @@
         <main class="">
             @yield('content')
         </main>
-        <footer>
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <img src="{{ asset('/images/logo-tour.jpg') }}" class="logo-tour" alt="Logo">
-                </div>
-                <div class="footer-links d-flex justify-content-between align-items-center gap-3">
-                        <a href="#">Home</a>
-                        <a href="#">About Us</a>
-                        <a href="#">Services</a>
-                        <a href="#">Contact</a>
-                </div>
-                <div class="footer-social d-flex justify-content-between align-items-center gap-3">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                </div>
-            </div>
-            {{-- <div class="footer-bottom text-align-center">
-                <p>&copy; 2024 Your Company. All rights reserved.</p>
-            </div> --}}
-        </footer>
     </div>
+    {{-- <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="{{ asset('/images/logo-tour.jpg') }}" class="logo-tour" alt="Logo">
+            </div>
+            <div class="footer-links d-flex justify-content-between align-items-center gap-3">
+                    <a href="#">Home</a>
+                    <a href="#">About Us</a>
+                    <a href="#">Services</a>
+                    <a href="#">Contact</a>
+            </div>
+            <div class="footer-social d-flex justify-content-between align-items-center gap-3">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom text-align-center">
+            <p>&copy; 2024 Your Company. All rights reserved.</p>
+        </div>
+    </footer> --}}
 </body>
 </html>
+@yield('script')

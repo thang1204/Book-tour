@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tours', function (Blueprint $table) {
+        Schema::create('tour_images', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->decimal('price', 10, 3);
-            $table->tinyInteger('number_of_participants');
+            $table->bigInteger('tour_id');
+            $table->mediumText('image');
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tours');
+        Schema::dropIfExists('tour_images');
     }
 };

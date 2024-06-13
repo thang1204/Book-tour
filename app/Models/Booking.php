@@ -14,6 +14,10 @@ class Booking extends Model
     protected $fillable = [
         'user_id',
         'tour_id',
+        'start_date',
+        'number_of_adults',
+        'number_of_children',
+        'total_price',
         'booking_date',
     ];
 

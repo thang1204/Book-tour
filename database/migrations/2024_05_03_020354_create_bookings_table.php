@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('tour_id');
+            $table->date('start_date');
+            $table->tinyInteger('number_of_adults');
+            $table->tinyInteger('number_of_children');
+            $table->integer('total_price');
             $table->dateTime('booking_date')->default(now());
             $table->timestamps();
         });

@@ -12,6 +12,7 @@ class Tour extends Model
     use HasFactory;
 
     protected $fillable = [
+        'area_id',
         'name',
         'description',
         'start_date',
@@ -31,7 +32,12 @@ class Tour extends Model
     }
 
     public function firstImage()
-{
-    return $this->hasOne(TourImage::class)->oldestOfMany();
-}
+    {
+        return $this->hasOne(TourImage::class)->oldestOfMany();
+    }
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Models\Area;
 use App\Models\Tour;
 use App\Models\TourImage;
 use Illuminate\Support\Str;
@@ -15,18 +16,24 @@ class TourController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $tours = Tour::all();
-        return view('tours.index', ['tours' => $tours]);
-    }
+    public function index($area_id)
+{
+    $area = Area::findOrFail($area_id);
+    $tours = Tour::where('area_id', $area_id)->get();
+    
+    return view('tours.index', [
+        'area' => $area,
+        'tours' => $tours
+    ]);
+}
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view('tours.create');
+        $areas = Area::all();
+        return view('tours.create', ['areas' => $areas]);
     }
 
     /**
@@ -36,6 +43,7 @@ class TourController extends Controller
     {
         try{
             $tour = Tour::create([
+                'area_id' => $request->input('area'),
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
                 'start_date' =>$request->input('start_date'),
@@ -58,7 +66,7 @@ class TourController extends Controller
             } catch (Exception $e) {
                 dd($e->getMessage());
             }
-        return redirect()->route('tour.index')->with('success', 'Tour created successfully.');
+            return redirect()->route('home')->with('success', 'Tour updated successfully.');
     }
 
     /**
@@ -74,9 +82,10 @@ class TourController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
-    {
+    {   
+        $areas = Area::all();
         $tour = Tour::findOrFail($id);
-        return view('tours.edit', compact('tour'));
+        return view('tours.edit', compact('tour', 'areas'));
     }
 
     /**
@@ -88,6 +97,7 @@ class TourController extends Controller
             $tour = Tour::findOrFail($id);
 
             $tour->update([
+                'area_id' => $request->input('area'),
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
                 'start_date' => $request->input('start_date'),
@@ -137,7 +147,7 @@ class TourController extends Controller
             dd($e->getMessage());
         }
 
-        return redirect()->route('tour.index')->with('success', 'Tour updated successfully.');
+        return redirect()->route('home')->with('success', 'Tour updated successfully.');
     }
 
     /**
@@ -151,10 +161,10 @@ class TourController extends Controller
             $tour->images()->delete();
             $tour->delete();
             DB::commit();
-            return redirect()->route('tour.index')->with('message', 'Xóa thành công tour');
+            return redirect()->route('home')->with('message', 'Xóa thành công tour');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('tour.index')->with('error', 'Xóa tour thất bại');
+            return redirect()->route('home')->with('error', 'Xóa tour thất bại');
         }
     }
 }

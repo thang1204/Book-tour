@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('tours', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('area_id');
             $table->string('name');
             $table->text('description');
             $table->date('start_date');
             $table->date('end_date');
-            $table->decimal('price', 10, 3);
+            $table->integer('price');
             $table->tinyInteger('number_of_participants');
             $table->timestamps();
         });

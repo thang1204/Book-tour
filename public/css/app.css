@@ -8,6 +8,16 @@ html, body {
     height: 100%;
 }
 
+.truncate-2-line {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2; /* Number of lines to show */
+    max-height: 3em; /* (Line height * number of lines) + (line height / 2) */
+    line-height: 1.5em; /* Line height of text */
+}
+
 a{
     text-decoration: none;
 }
@@ -50,6 +60,7 @@ a{
 .item-tour{
     border-radius: 8px;
     background-color: #e9ecef;
+    min-height: 480px;
 
 }
 .item-tour-image {
@@ -127,6 +138,7 @@ a{
 
 .input-search input:focus-visible,
 .input-search input{
+    outline: none;
     border: none;
 }
 
@@ -213,10 +225,91 @@ footer {
 }
 
 .btn-book-now:focus {
-    outline: none; /* Bỏ viền focus mặc định */
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Thêm shadow khi focus */
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
 }
 
 .btn-add-image{
     cursor: pointer;
+}
+
+
+.book-tour {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.book-tour h1 {
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+.book-tour label {
+    font-weight: bold;
+}
+
+.book-tour .form-group {
+    margin-bottom: 15px;
+}
+
+.book-tour .form-control {
+    border-radius: 5px;
+}
+
+.book-tour .price {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.book-tour button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.book-tour button:hover {
+    background-color: #0056b3;
+}
+
+
+
+/* Create edit delete */
+.create-tour-btn {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.create-tour-btn:hover {
+    background-color: #45a049;
+}
+.action-button {
+    display: inline-block;
+    margin-left: 10px; /* Điều chỉnh khoảng cách giữa các nút */
+    font-size: 16px;
+    color: #555;
+    transition: color 0.3s;
+}
+
+.action-button:hover {
+    color: #333;
+}
+
+.block-infor{
+    background-color:#e3e7ed;
+    padding: 20px 0;
 }

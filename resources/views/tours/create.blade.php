@@ -22,10 +22,22 @@
             <textarea name="description" class="form-control js-count-limit" id="description-tour" data-limit="200" rows="5">{{ old('description') }}</textarea>
         </div>
         <div class="form-group">
-            <label for="start-date" class="control-label text-muted mb-0">Ngày bắt đầu</label>
-            <input type="date" name="start_date" id="start-date" class="form-control" value="">
-            <label for="end-date" class="control-label text-muted mb-0">Ngày kết thúc</label>
-            <input type="date" name="end_date" id="end-date" class="form-control" value="">
+            <label for="area" class="control-label text-muted mb-0">Khu vực tour</label>
+            <select name="area" class="form-control" id="area">
+                @foreach($areas as $area)
+                    <option value="{{ $area->id }}">{{ $area->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group d-flex">
+            <div class="me-3">
+                <label for="start-date" class="control-label text-muted mb-0">Ngày bắt đầu</label>
+                <input type="date" name="start_date" id="start-date" class="form-control" value="">
+            </div>
+            <div>
+                <label for="end-date" class="control-label text-muted mb-0">Ngày kết thúc</label>
+                <input type="date" name="end_date" id="end-date" class="form-control" value="">
+            </div>
         </div>
         <div class="form-group">
             <label for="price" class="control-label text-muted mb-0">Giá Tour</label>

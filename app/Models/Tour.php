@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Hotel;
 use App\Models\Booking;
+use App\Models\Vehicle;
+use App\Models\TourGuide;
 use App\Models\TourImage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -40,4 +43,20 @@ class Tour extends Model
     {
         return $this->belongsTo(Area::class);
     }
+
+    public function hotel()
+    {
+        return $this->belongsTo(Hotel::class);
+    }
+
+    public function tourguide()
+    {
+        return $this->belongsTo(TourGuide::class);
+    }
+
+    public function Vehicle()
+    {
+        return $this->belongsTo(Vehicle::class);
+    }
+    
 }

@@ -16,6 +16,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
 </head>
 <body>
     <div style="height: 91vh;">
@@ -25,7 +30,74 @@
                     <img src="{{ asset('/images/logo-tour.jpg') }}" alt="" class="logo-tour me-3">
                     <p class="m-0 text-tour">WinND</p>
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+
+                @guest
+                    <div class="d-flex">
+                        @if (Route::has('login'))
+                            <div class="me-3">
+                                <a class="" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </div>
+                        @endif
+
+                        @if (Route::has('register'))
+                            <div class="">
+                                <a class="" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            </div>
+                        @endif
+                    </div>
+                @else
+                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button>
+
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                        <div class="offcanvas-header">
+                            <h5 id="offcanvasRightLabel">
+                                <a href="{{ route('customers.edit', Auth::user()->customer->id) }}">
+                                    <img src="{{ \Storage::url(Auth::user()->customer->avatar) }}" alt="Avatar" width="50">
+                                    {{ Auth::user()->name }}
+                                </a>
+                            </h5>
+                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            @can('isAdmin', App\Models\User::class)
+                            <div>
+                                <a href="{{ route('customers.index') }}">Quản lý Khách hàng</a>
+                            </div>
+                            <hr/>
+                            <div>
+                                <a href="{{ route('hotels.index') }}">Quản lý Hotel</a>
+                            </div>
+                            <hr/>
+                            <div>
+                                <a href="{{ route('tour_guides.index') }}">Quản lý Hướng Dẫn viên</a>
+                            </div>
+                            <hr/>
+                            <div>
+                                <a href="{{ route('vehicles.index') }}">Quản lý phương tiện</a>
+                            </div>
+                            <hr>
+                            <div>
+                                <a href="{{ route('drivers.index') }}">Quản lý tài xế</a>
+                            </div>
+                            <hr>
+
+                            @else
+                                <p>Bạn không phải là admin</p>
+                            @endcan
+
+                            <a class="" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </div>
+                    </div>
+                @endguest
+                {{-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -39,19 +111,19 @@
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <li class="">
+                                    <a class="" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                <li class="">
+                                    <a class="" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <li class=" dropdown">
+                                <a id="navbarDropdown" class=" dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
@@ -74,7 +146,7 @@
                             </li>
                         @endguest
                     </ul>
-                </div>
+                </div> --}}
             </div>
         </nav>
 

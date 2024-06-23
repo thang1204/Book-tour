@@ -46,7 +46,8 @@
                         @endif
                     </div>
                 @else
-                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button>
+                        <img class="avatar" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
+                            src="{{ \Storage::url(Auth::user()->customer->avatar) }}" alt="Avatar" width="50">
 
                     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
                         <div class="offcanvas-header">
@@ -60,6 +61,10 @@
                         </div>
                         <div class="offcanvas-body">
                             @can('isAdmin', App\Models\User::class)
+                            <div>
+                                <a href="{{ route('tour.index') }}">Quản lý Tours</a>
+                            </div>
+                            <hr/>
                             <div>
                                 <a href="{{ route('customers.index') }}">Quản lý Khách hàng</a>
                             </div>

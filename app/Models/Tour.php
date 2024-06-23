@@ -49,7 +49,7 @@ class Tour extends Model
         return $this->belongsTo(Hotel::class);
     }
 
-    public function tourguide()
+    public function guide()
     {
         return $this->belongsTo(TourGuide::class);
     }

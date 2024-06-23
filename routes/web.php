@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AreaController;
 use App\Http\Controllers\TourController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\DriverController;
@@ -10,8 +11,10 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\TourGuideController;
 
-Route::get('/tour/area/{area_id?}', [TourController::class, 'index'])->name('tour.index');
-Route::resource('/tour', TourController::class)->except(['index']);
+Route::get('/areas/search', [AreaController::class, 'search'])->name('areas.search');
+Route::get('areas/{area_id?}', [AreaController::class, 'index'])->name('areas.index');
+
+Route::resource('/tour', TourController::class);
 
 Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
 Route::get('/booking', [BookingController::class, 'store'])->name('bookings.store');

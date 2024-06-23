@@ -29,6 +29,39 @@
                 @endforeach
             </select>
         </div>
+
+        <div class="form-group">
+            <label for="hotel" class="control-label text-muted mb-0">Khách sạn</label>
+            <select name="hotel" class="form-control" id="hotel">
+                @foreach($hotels as $hotel)
+                    <option value="{{ $hotel->id }}">{{ $hotel->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="vehicle" class="control-label text-muted mb-0">Phương tiện</label>
+            <select name="vehicle" class="form-control" id="vehicle">
+                <option value="">Chọn Phương Tiện</option>
+                @foreach($vehicles as $vehicle)
+                    <option value="{{ $vehicle->id }}">{{ $vehicle->type }} {{ $vehicle->model }}</option>
+                @endforeach
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="guide" class="control-label text-muted mb-0">Hướng dẫn viên</label>
+            <select name="guide" class="form-control" id="guide">
+                <option value="">Chọn Hướng dẫn viên</option>
+
+                @foreach($guides as $guide)
+                    <option value="{{ $guide->id }}" data-img-src="{{ asset('storage/' . $guide->avatar) }}" {{ old('guide_id') == $guide->id ? 'selected' : '' }}>
+                        {{ $guide->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
         <div class="form-group d-flex">
             <div class="me-3">
                 <label for="start-date" class="control-label text-muted mb-0">Ngày bắt đầu</label>
@@ -251,6 +284,25 @@ $(document).ready(function() {
     //     });
     //     }
     // });
+
+
+    $(document).ready(function() {
+        function formatGuide(guide) {
+            if (!guide.id) {
+                return guide.text;
+            }
+            var $guide = $(
+                '<span><img src="' + $(guide.element).data('img-src') + '" class="img-avatar" /> ' + guide.text + '</span>'
+            );
+            return $guide;
+        };
+
+        $('#guide').select2({
+            templateResult: formatGuide,
+            templateSelection: formatGuide,
+            width: '100%'
+        });
+    });
     
 });
 </script>

@@ -19,8 +19,6 @@ return new class extends Migration
             $table->unsignedBigInteger('guide_id')->nullable();
             $table->string('name');
             $table->text('description');
-            $table->date('start_date');
-            $table->date('end_date');
             $table->integer('price');
             $table->tinyInteger('number_of_participants');
             $table->timestamps();

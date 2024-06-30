@@ -6,14 +6,15 @@ use Exception;
 use App\Models\Area;
 use App\Models\Tour;
 use App\Models\Hotel;
+use App\Models\Vehicle;
+use App\Models\TourDate;
 use App\Models\TourGuide;
 use App\Models\TourImage;
-use App\Models\Vehicle;
+use Ramsey\Uuid\Guid\Guid;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Ramsey\Uuid\Guid\Guid;
 
 class TourController extends Controller
 {
@@ -23,7 +24,7 @@ class TourController extends Controller
 
     public function index()
     {
-        $tours = Tour::with(['area', 'hotel', 'vehicle', 'guide'])->paginate(10);
+        $tours = Tour::with(['area', 'hotel', 'vehicle', 'guide', 'tourDates'])->paginate(10);
         return view('tours.index', compact('tours'));
     }
 
@@ -52,11 +53,20 @@ class TourController extends Controller
                 'guide_id' => $request->input('guide_id'),
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
-                'start_date' =>$request->input('start_date'),
-                'end_date' => $request->input('end_date'),
                 'price' => $request->input('price'),
                 'number_of_participants' => $request->input('number_of_participants'),
             ]);
+
+            $startDates = $request->input('start_date');
+            $endDates = $request->input('end_date');
+
+            for ($i = 0; $i < count($startDates); $i++) {
+                TourDate::create([
+                    'tour_id' => $tour->id,
+                    'start_date' => $startDates[$i],
+                    'end_date' => $endDates[$i],
+                ]);
+            }
 
             if ($request->hasFile('image')) {
                 foreach ($request->file('image') as $image) {
@@ -112,11 +122,21 @@ class TourController extends Controller
                 'guide_id' => $request->input('guide_id'),
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
-                'start_date' => $request->input('start_date'),
-                'end_date' => $request->input('end_date'),
                 'price' => $request->input('price'),
                 'number_of_participants' => $request->input('number_of_participants'),
             ]);
+
+            $tour->tourDates()->delete();
+
+            $startDates = $request->input('start_date');
+            $endDates = $request->input('end_date');
+
+            for ($i = 0; $i < count($startDates); $i++) {
+                $tour->tourDates()->create([
+                    'start_date' => $startDates[$i],
+                    'end_date' => $endDates[$i],
+                ]);
+            }
 
             
             $imageArrs = $request->images;
@@ -170,6 +190,7 @@ class TourController extends Controller
         try {
             $tour = Tour::findOrFail($id);
             DB::beginTransaction();
+            $tour->tourDates()->delete();
             $tour->images()->delete();
             $tour->delete();
             DB::commit();

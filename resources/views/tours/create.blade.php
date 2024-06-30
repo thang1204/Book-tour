@@ -62,19 +62,23 @@
             </select>
         </div>
 
-        <div class="form-group d-flex">
-            <div class="me-3">
-                <label for="start-date" class="control-label text-muted mb-0">Ngày bắt đầu</label>
-                <input type="date" name="start_date" id="start-date" class="form-control" value="">
-            </div>
-            <div>
-                <label for="end-date" class="control-label text-muted mb-0">Ngày kết thúc</label>
-                <input type="date" name="end_date" id="end-date" class="form-control" value="">
+        <div id="date-ranges-section">
+            <div class="form-group d-flex align-items-center mb-3" id="date-range-0">
+                <div class="me-3">
+                    <label for="start-date-0" class="control-label text-muted mb-0">Ngày bắt đầu</label>
+                    <input type="date" name="start_date[]" id="start-date-0" class="form-control" value="">
+                </div>
+                <div class="me-3">
+                    <label for="end-date-0" class="control-label text-muted mb-0">Ngày kết thúc</label>
+                    <input type="date" name="end_date[]" id="end-date-0" class="form-control" value="">
+                </div>
+                <a class="btn-delete-date-range text-danger fs-26" style="cursor:pointer;">&times;</a>
             </div>
         </div>
+        <a id="btn-add-date-range" class="btn btn-secondary mb-3">＋Thêm khoảng thời gian</a>
         <div class="form-group">
             <label for="price" class="control-label text-muted mb-0">Giá Tour</label>
-            <input type="number" name="price" id="price" class="form-control">
+            <input type="text" name="price" id="price" class="form-control" oninput="formatCurrency(this)">
         </div>
         <div class="form-group">
             <label for="number_of_participants" class="control-label text-muted mb-0">Số lượng người</label>
@@ -172,33 +176,39 @@ $(document).ready(function() {
         imageIndex++;
     });
     $("body").on("click", ".btn-delete-ai-image", function() {
-        $(this).closest('.div-ai-image').remove();
-    })
+        if ($('.div-ai-image').length > 1) {
+            $(this).closest('.div-ai-image').remove();
+        } else {
+            alert('Phải có ít nhất một ảnh.');
+        }
+    });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        var priceInput = document.getElementById('price');
 
-        priceInput.addEventListener('input', function() {
-            var value = this.value.replace(/\D/g, '');
+    $(document).ready(function() {
+        let dateIndex = 1;
+        $("#btn-add-date-range").on("click", function () {
+            const newDateRange = `
+                <div class="form-group d-flex align-items-center mb-3" id="date-range-${dateIndex}">
+                    <div class="me-3">
+                        <label for="start-date-${dateIndex}" class="control-label text-muted mb-0">Ngày bắt đầu</label>
+                        <input type="date" name="start_date[]" id="start-date-${dateIndex}" class="form-control" value="">
+                    </div>
+                    <div class="me-3">
+                        <label for="end-date-${dateIndex}" class="control-label text-muted mb-0">Ngày kết thúc</label>
+                        <input type="date" name="end_date[]" id="end-date-${dateIndex}" class="form-control" value="">
+                    </div>
+                    <a class="btn-delete-date-range text-danger fs-26" style="cursor:pointer;">&times;</a>
+                </div>
+            `;
+            $("#date-ranges-section").append(newDateRange);
+            dateIndex++;
+        });
 
-            // Nếu có giá trị, định dạng lại với "000đ"
-            if (value) {
-                this.value = value + '000đ';
+        $("body").on("click", ".btn-delete-date-range", function() {
+            if ($('.form-group.d-flex.align-items-center.mb-3').length > 1) {
+                $(this).closest('.form-group').remove();
             } else {
-                this.value = '';
-            }
-        });
-
-        priceInput.addEventListener('focus', function() {
-            // Loại bỏ '000đ' khi người dùng chỉnh sửa lại giá trị
-            this.value = this.value.replace('000đ', '');
-        });
-
-        priceInput.addEventListener('blur', function() {
-            // Thêm '000đ' khi người dùng hoàn thành chỉnh sửa
-            var value = this.value.replace(/\D/g, '');
-            if (value) {
-                this.value = value + '000đ';
+                alert('Phải có ít nhất một khoảng thời gian.');
             }
         });
     });

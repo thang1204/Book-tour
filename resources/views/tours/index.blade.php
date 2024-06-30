@@ -7,7 +7,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>#</th>
+                <th>STT</th>
                 <th>Tên Tour</th>
                 <th>Khu vực</th>
                 <th>Khách sạn</th>
@@ -29,9 +29,25 @@
                     <td>{{ $tour->hotel->name ?? 'N/A' }}</td>
                     <td>{{ $tour->vehicle->model ?? 'N/A' }}</td>
                     <td>{{ $tour->guide->name ?? 'N/A' }}</td>
-                    <td>{{ $tour->start_date }}</td>
-                    <td>{{ $tour->end_date }}</td>
-                    <td>{{ number_format($tour->price, 0, ',', '.') }}</td>
+                    <td>
+                        @if ($tour->tourDates->isNotEmpty())
+                            @foreach ($tour->tourDates as $index => $tourDate)
+                                {{ \Carbon\Carbon::parse($tourDate->start_date)->format('d/m/Y') }}<br>
+                            @endforeach
+                        @else
+                            N/A
+                        @endif
+                    </td>
+                    <td>
+                        @if ($tour->tourDates->isNotEmpty())
+                            @foreach ($tour->tourDates as $index => $tourDate)
+                                {{ \Carbon\Carbon::parse($tourDate->end_date)->format('d/m/Y') }}<br>
+                            @endforeach
+                        @else
+                            N/A
+                        @endif
+                    </td>
+                    <td>{{ number_format($tour->price, 0, ',', '.') }}.000₫</td>
                     <td>{{ $tour->number_of_participants }}</td>
                     <td>
                         <a href="{{ route('tour.edit', ['tour' => $tour->id]) }}" class="btn btn-warning btn-sm">Chỉnh sửa</a>

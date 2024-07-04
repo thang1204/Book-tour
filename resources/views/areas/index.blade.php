@@ -47,7 +47,7 @@
                             <p style="font-size: 22px;
                             font-weight: bold;
                             float: right;
-                            color: #00C1DE;"> {{ number_format($tour->price, 0, ',', '.') . ' VNĐ' }}</p>
+                            color: #00C1DE;"> {{ number_format($tour->price, 0, '.', '.') . '.000 VNĐ' }}</p>
                         </div>
                     </a>
                     <a href="{{ route('tour.edit', ['tour' => $tour->id]) }}" class="action-button">

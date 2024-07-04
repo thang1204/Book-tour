@@ -16,8 +16,7 @@ Route::get('areas/{area_id?}', [AreaController::class, 'index'])->name('areas.in
 
 Route::resource('/tour', TourController::class);
 
-Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
-Route::get('/booking', [BookingController::class, 'store'])->name('bookings.store');
+Route::resource('bookings', BookingController::class);
 
 
 

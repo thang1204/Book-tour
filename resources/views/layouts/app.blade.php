@@ -31,6 +31,16 @@
                     <p class="m-0 text-tour">WinND</p>
                 </a>
 
+                <a href="{{ route('home') }}" class="d-flex align-items-center">
+                    <p class="m-0 text-tour">Trang chủ</p>
+                </a>
+                <a href="" class="d-flex align-items-center">
+                    <p class="m-0 text-tour">Thông tin</p>
+                </a>
+                <a href="{{ route('bookings.index') }}" class="d-flex align-items-center">
+                    <i class="fa-solid fa-bookmark"></i>
+                </a>
+
                 @guest
                     <div class="d-flex">
                         @if (Route::has('login'))
@@ -87,7 +97,7 @@
                             <hr>
 
                             @else
-                                <p>Bạn không phải là admin</p>
+                                {{-- <p>Bạn không phải là admin</p> --}}
                             @endcan
 
                             <a class="" href="{{ route('logout') }}"

@@ -5,7 +5,12 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Models\Area;
 use App\Models\Tour;
+use App\Models\Hotel;
+use App\Models\Vehicle;
+use App\Models\TourDate;
+use App\Models\TourGuide;
 use App\Models\TourImage;
+use Ramsey\Uuid\Guid\Guid;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,16 +21,12 @@ class TourController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($area_id)
-{
-    $area = Area::findOrFail($area_id);
-    $tours = Tour::where('area_id', $area_id)->get();
-    
-    return view('tours.index', [
-        'area' => $area,
-        'tours' => $tours
-    ]);
-}
+
+    public function index()
+    {
+        $tours = Tour::with(['area', 'hotel', 'vehicle', 'guide', 'tourDates'])->paginate(10);
+        return view('tours.index', compact('tours'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -33,7 +34,10 @@ class TourController extends Controller
     public function create()
     {
         $areas = Area::all();
-        return view('tours.create', ['areas' => $areas]);
+        $hotels = Hotel::all();
+        $vehicles = Vehicle::all();
+        $guides = TourGuide::all();
+        return view('tours.create', compact('areas', 'hotels', 'vehicles', 'guides'));
     }
 
     /**
@@ -44,13 +48,25 @@ class TourController extends Controller
         try{
             $tour = Tour::create([
                 'area_id' => $request->input('area'),
+                'hotel_id' => $request->input('hotel_id'),
+                'vehicle_id' => $request->input('vehicle_id'),
+                'guide_id' => $request->input('guide_id'),
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
-                'start_date' =>$request->input('start_date'),
-                'end_date' => $request->input('end_date'),
                 'price' => $request->input('price'),
                 'number_of_participants' => $request->input('number_of_participants'),
             ]);
+
+            $startDates = $request->input('start_date');
+            $endDates = $request->input('end_date');
+
+            for ($i = 0; $i < count($startDates); $i++) {
+                TourDate::create([
+                    'tour_id' => $tour->id,
+                    'start_date' => $startDates[$i],
+                    'end_date' => $endDates[$i],
+                ]);
+            }
 
             if ($request->hasFile('image')) {
                 foreach ($request->file('image') as $image) {
@@ -66,7 +82,7 @@ class TourController extends Controller
             } catch (Exception $e) {
                 dd($e->getMessage());
             }
-            return redirect()->route('home')->with('success', 'Tour updated successfully.');
+            return redirect()->route('tour.index')->with('success', 'Tour updated successfully.');
     }
 
     /**
@@ -84,8 +100,11 @@ class TourController extends Controller
     public function edit(string $id)
     {   
         $areas = Area::all();
+        $hotels = Hotel::all();
+        $vehicles = Vehicle::all();
+        $guides = TourGuide::all();
         $tour = Tour::findOrFail($id);
-        return view('tours.edit', compact('tour', 'areas'));
+        return view('tours.edit', compact('tour', 'areas', 'hotels', 'vehicles', 'guides'));
     }
 
     /**
@@ -98,13 +117,26 @@ class TourController extends Controller
 
             $tour->update([
                 'area_id' => $request->input('area'),
+                'hotel_id' => $request->input('hotel_id'),
+                'vehicle_id' => $request->input('vehicle_id'),
+                'guide_id' => $request->input('guide_id'),
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
-                'start_date' => $request->input('start_date'),
-                'end_date' => $request->input('end_date'),
                 'price' => $request->input('price'),
                 'number_of_participants' => $request->input('number_of_participants'),
             ]);
+
+            $tour->tourDates()->delete();
+
+            $startDates = $request->input('start_date');
+            $endDates = $request->input('end_date');
+
+            for ($i = 0; $i < count($startDates); $i++) {
+                $tour->tourDates()->create([
+                    'start_date' => $startDates[$i],
+                    'end_date' => $endDates[$i],
+                ]);
+            }
 
             
             $imageArrs = $request->images;
@@ -147,7 +179,7 @@ class TourController extends Controller
             dd($e->getMessage());
         }
 
-        return redirect()->route('home')->with('success', 'Tour updated successfully.');
+        return redirect()->route('tour.index')->with('success', 'Tour updated successfully.');
     }
 
     /**
@@ -158,13 +190,14 @@ class TourController extends Controller
         try {
             $tour = Tour::findOrFail($id);
             DB::beginTransaction();
+            $tour->tourDates()->delete();
             $tour->images()->delete();
             $tour->delete();
             DB::commit();
-            return redirect()->route('home')->with('message', 'Xóa thành công tour');
+            return redirect()->route('tour.index')->with('message', 'Xóa thành công tour');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('home')->with('error', 'Xóa tour thất bại');
+            return redirect()->route('tour.index')->with('error', 'Xóa tour thất bại');
         }
     }
 }

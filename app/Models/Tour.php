@@ -29,6 +29,11 @@ class Tour extends Model
         return $this->hasMany(Booking::class);
     }
 
+    public function tourDates()
+    {
+        return $this->hasMany(TourDate::class);
+    }
+
     public function images()
     {
         return $this->hasMany(TourImage::class);
@@ -49,7 +54,7 @@ class Tour extends Model
         return $this->belongsTo(Hotel::class);
     }
 
-    public function tourguide()
+    public function guide()
     {
         return $this->belongsTo(TourGuide::class);
     }

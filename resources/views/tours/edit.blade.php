@@ -29,16 +29,56 @@
                 @endforeach
             </select>
         </div>
-        <div class="form-group d-flex">
-            <div class="me-3">
-                <label for="start-date" class="control-label text-muted mb-0">Ngày bắt đầu</label>
-                <input type="date" name="start_date" id="start-date" class="form-control" value="{{ $tour->start_date }}">
-            </div>
-            <div>
-                <label for="end-date" class="control-label text-muted mb-0">Ngày kết thúc</label>
-                <input type="date" name="end_date" id="end-date" class="form-control" value="{{ $tour->end_date }}">
-            </div>
+        <div class="form-group">
+            <label for="hotel" class="control-label text-muted mb-0">Khách sạn</label>
+            <select name="hotel" class="form-control" id="hotel">
+                @foreach($hotels as $hotel)
+                    <option value="{{ $hotel->id }}" @if($tour->hotel_id == $hotel->id) selected @endif>
+                        {{ $hotel->name }}
+                    </option>
+                @endforeach
+            </select>
         </div>
+
+        <div class="form-group">
+            <label for="vehicle" class="control-label text-muted mb-0">Phương tiện</label>
+            <select name="vehicle" class="form-control" id="vehicle">
+                @foreach($vehicles as $vehicle)
+                    <option value="{{ $vehicle->id }}" @if($tour->vehicle_id == $vehicle->id) selected @endif>
+                        {{ $vehicle->type }} {{ $vehicle->model }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="guide" class="control-label text-muted mb-0">Hướng dẫn viên</label>
+            <select name="guide" class="form-control" id="guide">
+
+                @foreach($guides as $guide)
+                    <option value="{{ $guide->id }}" data-img-src="{{ asset('storage/' . $guide->avatar) }}" {{ $tour->guide_id == $guide->id ? 'selected' : '' }}>
+                        {{ $guide->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div id="date-ranges-section">
+            @foreach($tour->tourDates as $index => $date)
+            <div class="form-group d-flex align-items-center mb-3" id="date-range-{{ $index }}">
+                <div class="me-3">
+                    <label for="start-date-{{ $index }}" class="control-label text-muted mb-0">Ngày bắt đầu</label>
+                    <input type="date" name="start_date[]" id="start-date-{{ $index }}" class="form-control" value="{{ $date->start_date }}">
+                </div>
+                <div class="me-3">
+                    <label for="end-date-{{ $index }}" class="control-label text-muted mb-0">Ngày kết thúc</label>
+                    <input type="date" name="end_date[]" id="end-date-{{ $index }}" class="form-control" value="{{ $date->end_date }}">
+                </div>
+                <a class="btn-delete-date-range text-danger fs-26" style="cursor:pointer;">&times;</a>
+            </div>
+            @endforeach
+        </div>
+        <a id="btn-add-date-range" class="btn btn-secondary mb-3">＋Thêm khoảng thời gian</a>
+    
         <div class="form-group">
             <label for="price" class="control-label text-muted mb-0">Giá Tour</label>
             <input type="number" name="price" class="form-control" value="{{ $tour->price }}">
@@ -145,9 +185,44 @@ $(document).ready(function() {
         $(".list-item-image").append(newItem);
     });
     $("body").on("click", ".btn-delete-ai-image", function() {
-        $(this).closest('.div-ai-image').remove();
-    })
+        if ($('.div-ai-image').length > 1) {
+            $(this).closest('.div-ai-image').remove();
+        } else {
+            alert('Phải có ít nhất một ảnh.');
+        }
+    });
 
+
+    $(document).ready(function() {
+        let dateIndex = {{ $tour->tourDates->count() }}; // Start index after existing dates
+
+        $("#btn-add-date-range").on("click", function () {
+            const newDateRange = `
+                <div class="form-group d-flex align-items-center mb-3" id="date-range-${dateIndex}">
+                    <div class="me-3">
+                        <label for="start-date-${dateIndex}" class="control-label text-muted mb-0">Ngày bắt đầu</label>
+                        <input type="date" name="start_date[]" id="start-date-${dateIndex}" class="form-control" value="">
+                    </div>
+                    <div class="me-3">
+                        <label for="end-date-${dateIndex}" class="control-label text-muted mb-0">Ngày kết thúc</label>
+                        <input type="date" name="end_date[]" id="end-date-${dateIndex}" class="form-control" value="">
+                    </div>
+                    <a class="btn-delete-date-range text-danger fs-26" style="cursor:pointer;">&times;</a>
+                </div>
+            `;
+            $("#date-ranges-section").append(newDateRange);
+            dateIndex++;
+        });
+
+        $("body").on("click", ".btn-delete-date-range", function() {
+        if ($('.form-group.d-flex.align-items-center.mb-3').length > 1) {
+            $(this).closest('.form-group').remove();
+        } else {
+            alert('Phải có ít nhất một khoảng thời gian.');
+        }
+    });
+
+    });
         
     // var csrfToken = $('meta[name="csrf-token"]').attr('content');
     // $('#btn-save-ai').click(function () {
@@ -229,6 +304,25 @@ $(document).ready(function() {
     //     });
     //     }
     // });
+
+    //Select2
+    $(document).ready(function() {
+        function formatGuide(guide) {
+            if (!guide.id) {
+                return guide.text;
+            }
+            var $guide = $(
+                '<span><img src="' + $(guide.element).data('img-src') + '" class="img-avatar" /> ' + guide.text + '</span>'
+            );
+            return $guide;
+        };
+
+        $('#guide').select2({
+            templateResult: formatGuide,
+            templateSelection: formatGuide,
+            width: '100%'
+        });
+    });
     
 });
 </script>

@@ -11,10 +11,9 @@
     <div class="form-search">
         <h1 class="text-white" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 1)">Thế giới trong tay bạn</h1>
         <p class="text-white fs-30px" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 1); font-size:24px;">Phục vụ tận tâm, giá siêu ưu đãi</p>
-        <div class="input-search">
-            <input type="text" placeholder="Bạn muốn đi đâu ?" class="col-11">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
+        <select id="area-search" class="input-search" style="width: 100%;">
+            <option value="" disabled selected>Bạn muốn đi đâu?</option>
+        </select>
     </div>
 </div>
 <div class="container">
@@ -22,7 +21,7 @@
     <h1 class="text-align-center mb-5">Những địa điểm hấp dẫn trong nước</h1>
     <div class="image-list">
         @foreach($areas as $area)
-            <a href="{{ route('tour.index', ['area_id' => $area->id]) }}" class="item-image-top mb-3">
+            <a href="{{ route('areas.index', ['area_id' => $area->id]) }}" class="item-image-top mb-3">
                 <img src="{{ $area->thumbnail }}" alt="">
                 <h5 class="text-image-top">{{ $area->name }}</h5>
             </a>
@@ -74,50 +73,8 @@
 
 
     <h1 class="text-align-center mb-3">Điểm đến yêu thích nước ngoài</h1>
-    {{-- <div class="d-flex swiper mySwiper">
-        <div class="swiper-wrapper">
-            @foreach($tours as $tour)
-                <div class="text-dark item-tour swiper-slide" style="min-height: 480px">
-                    <div class="item-tour-image">
-                        <img src="https://media.tacdn.com/media/attractions-splice-spp-674x446/0b/26/44/b5.jpg" alt="">
-                    </div>
-                    <div>
-                        <h2><i class="fa-solid fa-map-location-dot fs-12"></i> {{ $tour->name }}</h2>
-                        <p>{{ $tour->description }}</p>
-                        <p>Time: {{ $tour->time }}</p>
-                        <p>Price: {{ $tour->price }}$</p>
-                    </div>
-                    <button class="btn-book-now" data-url="{{ route('bookings.store') }}" data-tour-id="{{ $tour->id }}">Book now {{ $tour->id }}</button>
-                </div>
-            @endforeach
-        </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-pagination"></div>
-    </div> --}}
+    
 </div>
-<script>
-    var swiper = new Swiper(".mySwiper", {
-      cssMode: true,
-      slidesPerView: 3,
-      spaceBetween: 30,
-      navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-      },
-      pagination: {
-        el: ".swiper-pagination",
-      },
-      mousewheel: true,
-      keyboard: true,
-      autoplay: {
-        delay: 4000,
-        disableOnInteraction: false,
-    },
-    });
-
-   
-</script>
 <script>
     $(document).ready(function() {
         $('.btn-book-now').click(function(event) {
@@ -136,6 +93,34 @@
                     console.error(xhr.responseText);
                 }
             });
+        });
+    });
+
+
+    $(document).ready(function() {
+        $('#area-search').select2({
+            placeholder: "Bạn muốn đi đâu?",
+            ajax: {
+                url: '{{ route('areas.search') }}',
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+
+        $('#area-search').on('select2:select', function (e) {
+            var data = e.params.data;
+            window.location.href = '/areas/' + data.id;
         });
     });
 </script>

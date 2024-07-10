@@ -31,22 +31,33 @@
                     <p class="m-0 text-tour">WinND</p>
                 </a>
 
+                <a href="{{ route('home') }}" class="d-flex align-items-center">
+                    <p class="m-0 text-tour">Trang chủ</p>
+                </a>
+                <a href="" class="d-flex align-items-center">
+                    <p class="m-0 text-tour">Thông tin</p>
+                </a>
+                <a href="{{ route('bookings.index') }}" class="d-flex align-items-center">
+                    <i class="fa-solid fa-bookmark"></i>
+                </a>
+
                 @guest
                     <div class="d-flex">
                         @if (Route::has('login'))
                             <div class="me-3">
-                                <a class="" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="" href="{{ route('login') }}">Đăng nhập</a>
                             </div>
                         @endif
 
                         @if (Route::has('register'))
                             <div class="">
-                                <a class="" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                <a class="" href="{{ route('register') }}">Đăng ký</a>
                             </div>
                         @endif
                     </div>
                 @else
-                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button>
+                        <img class="avatar" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
+                            src="{{ \Storage::url(Auth::user()->customer->avatar) }}" alt="Avatar" width="50">
 
                     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
                         <div class="offcanvas-header">
@@ -61,15 +72,19 @@
                         <div class="offcanvas-body">
                             @can('isAdmin', App\Models\User::class)
                             <div>
-                                <a href="{{ route('customers.index') }}">Quản lý Khách hàng</a>
+                                <a href="{{ route('tour.index') }}">Quản lý Tours</a>
                             </div>
                             <hr/>
                             <div>
-                                <a href="{{ route('hotels.index') }}">Quản lý Hotel</a>
+                                <a href="{{ route('customers.index') }}">Quản lý khách hàng</a>
                             </div>
                             <hr/>
                             <div>
-                                <a href="{{ route('tour_guides.index') }}">Quản lý Hướng Dẫn viên</a>
+                                <a href="{{ route('hotels.index') }}">Quản lý khách sạn</a>
+                            </div>
+                            <hr/>
+                            <div>
+                                <a href="{{ route('tour_guides.index') }}">Quản lý hướng dẫn viên</a>
                             </div>
                             <hr/>
                             <div>
@@ -81,14 +96,19 @@
                             </div>
                             <hr>
 
+                            <div>
+                                <a href="{{ route('statistics.index') }}">Thống kê</a>
+                            </div>
+                            <hr>
+                            
                             @else
-                                <p>Bạn không phải là admin</p>
+                                {{-- <p>Bạn không phải là admin</p> --}}
                             @endcan
 
                             <a class="" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
+                                Đăng xuất
                             </a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

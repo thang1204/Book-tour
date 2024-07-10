@@ -80,37 +80,44 @@
         </div>
         <div class="col-4 book-tour">
             <h1 class="mt-5">Lịch Trình và Giá Tour</h1>
-            <div class="form-group">
-                <label for="tour_date">Chọn Lịch Trình và Xem Giá:</label>
+            <form id="booking-form" action="{{ route('bookings.store') }}" method="POST" onsubmit="return validateForm()">
+                @csrf
+                <input type="hidden" name="tour_id" value="{{ $tour->id }}">
+            
                 <div class="form-group">
-                    <label for="saturdayDate">Chọn ngày</label>
-                    <input type="date" id="saturdayDate" class="form-control" placeholder="Choose a date">
-                    <small id="error-message" class="error-message">Vui lòng chọn ngày là Thứ Bảy.</small>
+                    <label>Chọn ngày đi</label>
+                    <input type="date" id="startDate" name="start_date" class="form-control">
+                    <label>Ngày về</label>
+                    <input type="date" id="endDate" name="end_date" class="form-control" readonly>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="adults">Người lớn (> 10 tuổi)</label>
-                <input type="number" class="form-control" id="adults" name="adults" value="1" min="1">
-            </div>
-            <div class="form-group">
-                <label for="children">Trẻ em (< 10 tuổi)</label>
-                <input type="number" class="form-control" id="children" name="children" value="0" min="0">
-            </div>
-            {{--  --}}
-            <div class="form-group">
-                <label for="children">Mã giảm giá</label>
-                <input type="text" class="form-control" >
-            </div>
-            {{--  --}}
-            <div class="form-group">
-                <label>Giá gốc:</label>
-                <div id="original_price" class="price">{{ $tour->price }} VND</div>
-            </div>
-            <div class="form-group">
-                <label>Tổng Giá Tour:</label>
-                <div id="total_price" class="price">0 VND</div>
-            </div>
-            <button class="btn-book-now" data-url="{{ route('bookings.store') }}" data-tour-id="{{ $tour->id }}" data-adults="" data-children="" data-total-price="">>Book now</button>
+            
+                <div class="form-group">
+                    <label for="adults">Người lớn (> 10 tuổi)</label>
+                    <input type="number" class="form-control" id="adults" name="adults" value="1" min="1" onchange="updateTotalPrice()">
+                </div>
+            
+                <div class="form-group">
+                    <label for="children">Trẻ em (< 10 tuổi)</label>
+                    <input type="number" class="form-control" id="children" name="children" value="0" min="0" onchange="updateTotalPrice()">
+                </div>
+            
+                <div class="form-group">
+                    <label for="discount_code">Mã giảm giá</label>
+                    <input type="text" class="form-control" id="discount_code" name="discount_code">
+                </div>
+            
+                <div class="form-group">
+                    <label>Giá gốc:</label>
+                    <div id="original_price" class="price">{{ number_format($tour->price, 0, ',', '.') }} VND</div>
+                </div>
+            
+                <div class="form-group">
+                    <label>Tổng Giá Tour:</label>
+                    <div id="total_price" class="price">0 VND</div>
+                </div>
+            
+                <button type="submit" class="btn-book-now">Book now</button>
+            </form>
         </div>
    </div>
 </div>
@@ -139,13 +146,10 @@
             const childrenPrice = originalPrice / 2;
             const totalPrice = (adults * originalPrice) + (children * childrenPrice);
             
-            // Update the display element with formatted price
             totalPriceElement.innerText = totalPrice.toLocaleString('vi-VN') + ' VND';
             
-            // Update data-total-price attribute with the numeric value
             totalPriceElement.setAttribute('data-total-price', totalPrice);
             
-            // Update data attributes on the button
             bookNowButton.setAttribute('data-total-price', totalPrice);
             bookNowButton.setAttribute('data-adults', adults);
             bookNowButton.setAttribute('data-children', children);
@@ -159,69 +163,7 @@
         calculateTotalPrice();
 
 
-    $(document).ready(function() {
-        $('.btn-book-now').click(function(event) {
-            event.preventDefault();
-            const url = $(this).attr('data-url');
-            const tourId = $(this).data('tour-id');
-            const adults = $(this).attr('data-adults');
-            const children = $(this).attr('data-children');
-            const totalPrice = $(this).attr('data-total-price');
-            
-            console.log(url);
-            console.log(tourId);
-            console.log(adults);
-            console.log(children);
-            console.log(totalPrice);
-            $.ajax({
-                url: url,
-                data: {
-                    tour_id: tourId,
-                    number_of_adults: adults,
-                    number_of_children: children,
-                    total_price: totalPrice,
-                },
-                success: function(response) {
-                    window.location.href = '/bookings';
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                }
-            });
-        });
-    });
-    //////////////////////
 
-    const dateInput = document.getElementById('saturdayDate');
-        const errorMessage = document.getElementById('error-message');
-
-        // Sự kiện khi thay đổi ngày
-        dateInput.addEventListener('change', function() {
-            const selectedDate = new Date(this.value);
-            const dayOfWeek = selectedDate.getUTCDay(); // 0 = Chủ Nhật, 6 = Thứ Bảy
-
-            if (dayOfWeek !== 6) { // Nếu không phải Thứ Bảy
-                errorMessage.style.display = 'block';
-                this.value = ''; // Xóa giá trị nhập
-            } else {
-                errorMessage.style.display = 'none';
-            }
-        });
-
-        // Khởi tạo giá trị mặc định
-        initializeDate();
-
-        function initializeDate() {
-            const today = new Date();
-            const currentDay = today.getUTCDay();
-
-            // Nếu hôm nay không phải là Thứ Bảy, tìm Thứ Bảy gần nhất
-            if (currentDay !== 6) {
-                const daysUntilSaturday = (6 - currentDay + 7) % 7;
-                today.setDate(today.getDate() + daysUntilSaturday);
-            }
-            
-            dateInput.value = today.toISOString().split('T')[0];
-        }
+    
 </script>
 @endsection

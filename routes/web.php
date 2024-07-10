@@ -10,6 +10,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\TourGuideController;
+use App\Http\Controllers\StatisticsController;
 
 Route::get('/areas/search', [AreaController::class, 'search'])->name('areas.search');
 Route::get('areas/{area_id?}', [AreaController::class, 'index'])->name('areas.index');
@@ -17,7 +18,7 @@ Route::get('areas/{area_id?}', [AreaController::class, 'index'])->name('areas.in
 Route::resource('/tour', TourController::class);
 
 Route::resource('bookings', BookingController::class);
-
+Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index');
 
 
 Auth::routes();

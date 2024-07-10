@@ -45,13 +45,13 @@
                     <div class="d-flex">
                         @if (Route::has('login'))
                             <div class="me-3">
-                                <a class="" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="" href="{{ route('login') }}">Đăng nhập</a>
                             </div>
                         @endif
 
                         @if (Route::has('register'))
                             <div class="">
-                                <a class="" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                <a class="" href="{{ route('register') }}">Đăng ký</a>
                             </div>
                         @endif
                     </div>
@@ -76,15 +76,15 @@
                             </div>
                             <hr/>
                             <div>
-                                <a href="{{ route('customers.index') }}">Quản lý Khách hàng</a>
+                                <a href="{{ route('customers.index') }}">Quản lý khách hàng</a>
                             </div>
                             <hr/>
                             <div>
-                                <a href="{{ route('hotels.index') }}">Quản lý Hotel</a>
+                                <a href="{{ route('hotels.index') }}">Quản lý khách sạn</a>
                             </div>
                             <hr/>
                             <div>
-                                <a href="{{ route('tour_guides.index') }}">Quản lý Hướng Dẫn viên</a>
+                                <a href="{{ route('tour_guides.index') }}">Quản lý hướng dẫn viên</a>
                             </div>
                             <hr/>
                             <div>
@@ -96,6 +96,11 @@
                             </div>
                             <hr>
 
+                            <div>
+                                <a href="{{ route('statistics.index') }}">Thống kê</a>
+                            </div>
+                            <hr>
+                            
                             @else
                                 {{-- <p>Bạn không phải là admin</p> --}}
                             @endcan
@@ -103,7 +108,7 @@
                             <a class="" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
+                                Đăng xuất
                             </a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

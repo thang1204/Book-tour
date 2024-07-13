@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <h1>Quản lý Tour</h1>
-
+    <a href="{{ route('tour.create') }}" class="my-4 create-tour-btn">Tạo Tour</a>
     <table class="table table-striped">
         <thead>
             <tr>

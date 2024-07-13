@@ -23,7 +23,7 @@
 
 </head>
 <body>
-    <div style="height: 91vh;">
+    <div class="d-flex flex-column min-vh-100">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a href="{{ route('home') }}" class="d-flex align-items-center">
@@ -95,7 +95,10 @@
                                 <a href="{{ route('drivers.index') }}">Quản lý tài xế</a>
                             </div>
                             <hr>
-
+                            <div>
+                                <a href="{{ route('banks.edit', 1) }}">Tài khoản thanh toán</a>
+                            </div>
+                            <hr>
                             <div>
                                 <a href="{{ route('statistics.index') }}">Thống kê</a>
                             </div>
@@ -174,7 +177,7 @@
             @yield('content')
         </main>
     </div>
-    {{-- <footer>
+    <footer>
         <div class="footer-content">
             <div class="footer-logo">
                 <img src="{{ asset('/images/logo-tour.jpg') }}" class="logo-tour" alt="Logo">
@@ -192,10 +195,8 @@
                     <a href="#"><i class="fab fa-linkedin"></i></a>
             </div>
         </div>
-        <div class="footer-bottom text-align-center">
-            <p>&copy; 2024 Your Company. All rights reserved.</p>
-        </div>
-    </footer> --}}
+        
+    </footer>
 </body>
 </html>
 @yield('script')

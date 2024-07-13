@@ -181,26 +181,6 @@ a{
     cursor: pointer;
 }
 
-
-/*  */
-footer {
-    background-color: #d7e0ff;
-    color: #fff;
-    padding: 10px 0;
-    margin: 0 auto;
-     width: 100%;
-}
-
-.footer-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
 .btn-book-now {
     display: inline-block;
     padding: 10px 20px; /* Khoảng cách bên trong nút */
@@ -379,3 +359,46 @@ tr:nth-child(even) {
 .btn-danger:hover {
     background-color: #c82333;
 }
+
+/*  */
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f8f9fa; /* Màu nền của footer */
+}
+
+.footer-logo img {
+    max-height: 50px;
+}
+
+.footer-links a, .footer-social a {
+    color: #000;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover, .footer-social a:hover {
+    color: #007bff;
+}
+
+.footer-social a i {
+    font-size: 20px;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 10px;
+    background-color: #e9ecef;
+}
+
+footer {
+    margin-top: auto;
+    background-color: #f8f9fa;
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+/*  */

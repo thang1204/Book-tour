@@ -2,21 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bank;
 use App\Models\Tour;
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use App\Mail\BookingConfirmed;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
 
     public function index()
     {
-        $user_id = auth()->id();
-        $bookings = Booking::where('user_id', $user_id)
-                           ->with(['tour.area', 'tour.hotel', 'tour.vehicle', 'tour.guide'])
-                           ->get();
-        return view('bookings.index', compact('bookings'));
+        $user = auth()->user();
+
+        if ($user->role === 1) {
+            $bookings = Booking::with(['tour.area', 'tour.hotel', 'tour.vehicle', 'tour.guide'])->get();
+            return view('bookings.index_admin', compact('bookings'));
+        } else {
+            $bookings = Booking::where('user_id', $user->id)
+                            ->with(['tour.area', 'tour.hotel', 'tour.vehicle', 'tour.guide'])
+                            ->get();
+            return view('bookings.index', compact('bookings'));
+        }
     }
 
     public function store(Request $request)
@@ -54,6 +63,9 @@ class BookingController extends Controller
         $booking->total_price = $totalPrice;
         $booking->save();
 
+        $bank = Bank::first();
+        Mail::to(Auth::user()->email)->send(new BookingConfirmed($booking, $bank));
+
         return redirect()->route('bookings.index')->with('success', 'Đặt tour thành công!');
     }
 
@@ -67,5 +79,16 @@ class BookingController extends Controller
         }
 
         return redirect()->route('bookings.index')->with('error', 'Không thể hủy tour này.');
+    }
+
+    public function updatePaymentStatus(Request $request)
+    {
+        $booking = Booking::find($request->id);
+        if ($booking) {
+            $booking->payment_status = $request->payment_status;
+            $booking->save();
+            return response()->json(['success' => true]);
+        }
+        return response()->json(['success' => false], 404);
     }
 }

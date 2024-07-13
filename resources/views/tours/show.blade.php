@@ -129,8 +129,6 @@
       },
     });
 
-   
-
     const adultsInput = document.getElementById('adults');
         const childrenInput = document.getElementById('children');
         const originalPriceElement = document.getElementById('original_price');
@@ -159,11 +157,6 @@
         adultsInput.addEventListener('input', calculateTotalPrice);
         childrenInput.addEventListener('input', calculateTotalPrice);
 
-        // Calculate total price on page load
         calculateTotalPrice();
-
-
-
-    
 </script>
 @endsection

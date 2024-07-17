@@ -24,9 +24,9 @@
         </div>
         <div class="form-group">
             <label for="description">Mô Tả</label>
-            <textarea class="form-control" id="description" name="description">{{ $hotel->description }}</textarea>
+            <textarea style="height:100px;" class="form-control" id="description" name="description">{{ $hotel->description }}</textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Cập Nhật</button>
+        <button type="submit" class="btn btn-primary mt-3">Cập Nhật</button>
     </form>
 </div>
 @endsection

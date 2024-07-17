@@ -23,21 +23,21 @@
 
 </head>
 <body>
-    <div style="height: 91vh;">
+    <div class="d-flex flex-column min-vh-100">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a href="{{ route('home') }}" class="d-flex align-items-center">
+                <a href="{{ route('home') }}" class="d-flex align-items-center text-header">
                     <img src="{{ asset('/images/logo-tour.jpg') }}" alt="" class="logo-tour me-3">
                     <p class="m-0 text-tour">WinND</p>
                 </a>
 
-                <a href="{{ route('home') }}" class="d-flex align-items-center">
+                <a href="{{ route('home') }}" class="d-flex align-items-center text-header">
                     <p class="m-0 text-tour">Trang chủ</p>
                 </a>
-                <a href="" class="d-flex align-items-center">
+                <a href="" class="d-flex align-items-center text-header">
                     <p class="m-0 text-tour">Thông tin</p>
                 </a>
-                <a href="{{ route('bookings.index') }}" class="d-flex align-items-center">
+                <a href="{{ route('bookings.index') }}" class="d-flex align-items-center text-header">
                     <i class="fa-solid fa-bookmark"></i>
                 </a>
 
@@ -45,25 +45,30 @@
                     <div class="d-flex">
                         @if (Route::has('login'))
                             <div class="me-3">
-                                <a class="" href="{{ route('login') }}">Đăng nhập</a>
+                                <a class="text-header" href="{{ route('login') }}">Đăng nhập</a>
                             </div>
                         @endif
 
                         @if (Route::has('register'))
                             <div class="">
-                                <a class="" href="{{ route('register') }}">Đăng ký</a>
+                                <a class="text-header" href="{{ route('register') }}">Đăng ký</a>
                             </div>
                         @endif
                     </div>
                 @else
-                        <img class="avatar" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
-                            src="{{ \Storage::url(Auth::user()->customer->avatar) }}" alt="Avatar" width="50">
+                    <img class="avatar avatar_hover" 
+                        data-bs-toggle="offcanvas" 
+                        data-bs-target="#offcanvasRight" 
+                        aria-controls="offcanvasRight"
+                        src="{{ Auth::user()->customer->avatar ? \Storage::url(Auth::user()->customer->avatar) : asset('images/avatar_default.jpg') }}" 
+                        alt="Avatar" 
+                        width="50">
 
                     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
                         <div class="offcanvas-header">
                             <h5 id="offcanvasRightLabel">
-                                <a href="{{ route('customers.edit', Auth::user()->customer->id) }}">
-                                    <img src="{{ \Storage::url(Auth::user()->customer->avatar) }}" alt="Avatar" width="50">
+                                <a href="{{ route('customers.edit', Auth::user()->customer->id) }}" class="avatar avatar_hover">
+                                    <img src="{{ Auth::user()->customer->avatar ? \Storage::url(Auth::user()->customer->avatar) : asset('images/avatar_default.jpg') }}" alt="Avatar" width="50">
                                     {{ Auth::user()->name }}
                                 </a>
                             </h5>
@@ -95,7 +100,10 @@
                                 <a href="{{ route('drivers.index') }}">Quản lý tài xế</a>
                             </div>
                             <hr>
-
+                            <div>
+                                <a href="{{ route('banks.edit', 1) }}">Tài khoản thanh toán</a>
+                            </div>
+                            <hr>
                             <div>
                                 <a href="{{ route('statistics.index') }}">Thống kê</a>
                             </div>
@@ -174,7 +182,7 @@
             @yield('content')
         </main>
     </div>
-    {{-- <footer>
+    <footer>
         <div class="footer-content">
             <div class="footer-logo">
                 <img src="{{ asset('/images/logo-tour.jpg') }}" class="logo-tour" alt="Logo">
@@ -192,10 +200,8 @@
                     <a href="#"><i class="fab fa-linkedin"></i></a>
             </div>
         </div>
-        <div class="footer-bottom text-align-center">
-            <p>&copy; 2024 Your Company. All rights reserved.</p>
-        </div>
-    </footer> --}}
+        
+    </footer>
 </body>
 </html>
 @yield('script')

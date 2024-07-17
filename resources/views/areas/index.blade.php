@@ -19,7 +19,7 @@
 </div>
 <div class="container pb-5">
     <h1 class="text-align-center mb-3">Địa điểm ở {{ $area->name }}<input type="button" value=""></h1>
-    <a href="{{ route('tour.create') }}" class="my-4 create-tour-btn">Tạo Tour</a>
+    {{-- <a href="{{ route('tour.create') }}" class="my-4 create-tour-btn">Tạo Tour</a> --}}
     <div class="list-tour">
         @foreach($tours as $tour)
             <form action="{{ route('tour.destroy', ['tour' => $tour->id]) }}" method="POST" style="display: inline;">
@@ -50,17 +50,12 @@
                             color: #00C1DE;"> {{ number_format($tour->price, 0, '.', '.') . '.000 VNĐ' }}</p>
                         </div>
                     </a>
-                    <a href="{{ route('tour.edit', ['tour' => $tour->id]) }}" class="action-button">
+                    {{-- <a href="{{ route('tour.edit', ['tour' => $tour->id]) }}" class="action-button">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
                     <button type="submit" class="action-button" style="background: none; border: none; padding: 0; cursor: pointer;">
                         <i class="fa-solid fa-trash"></i>
-                    </button>
-                    @if($tour->hotel)
-                        {{ $tour->hotel->name }}
-                    @else
-                        Không có thông tin khách sạn.
-                    @endif
+                    </button> --}}
 
                 </div>
             </form>

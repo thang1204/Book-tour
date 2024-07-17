@@ -31,7 +31,7 @@
                     <td>{{ $tourGuide->phone }}</td>
                     <td>{{ $tourGuide->email }}</td>
                     <td>{{ $tourGuide->bio }}</td>
-                    <td>
+                    <td style="text-align: left; white-space: nowrap;">
                         <a href="{{ route('tour_guides.edit', $tourGuide->id) }}" class="btn btn-warning">Chỉnh Sửa</a>
                         <form action="{{ route('tour_guides.destroy', $tourGuide->id) }}" method="POST" style="display:inline-block;">
                             @csrf

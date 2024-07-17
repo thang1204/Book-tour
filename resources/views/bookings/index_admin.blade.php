@@ -18,6 +18,7 @@
         <table>
             <thead>
                 <tr>
+                    <th>Khách hàng</th>
                     <th>Tour</th>
                     <th>Ngày bắt đầu</th>
                     <th>Khu vực</th>
@@ -35,6 +36,7 @@
             <tbody>
                 @foreach($bookings as $booking)
                     <tr>
+                        <td>{{ $booking->user->name }}</td>
                         <td>{{ $booking->tour->name }}</td>
                         <td>{{ $booking->start_date }}</td>
                         <td>{{ $booking->tour->area->name ?? 'N/A' }}</td>
@@ -46,15 +48,11 @@
                         <td>{{ number_format($booking->total_price) }} VND</td>
                         <td>{{ $booking->order_code }}</td>
                         <td>
-                            @if ($booking->payment_status == 'unpaid')
-                                Chưa thanh toán
-                            @elseif ($booking->payment_status == 'deposit')
-                                Đã đặt cọc
-                            @elseif ($booking->payment_status == 'paid')
-                                Đã thanh toán
-                            @else
-                                Không xác định
-                            @endif
+                            <select class="payment-status" data-booking-id="{{ $booking->id }}">
+                                <option value="unpaid" {{ $booking->payment_status == 'unpaid' ? 'selected' : '' }}>Chưa thanh toán</option>
+                                <option value="deposit" {{ $booking->payment_status == 'deposit' ? 'selected' : '' }}>Đã đặt cọc</option>
+                                <option value="paid" {{ $booking->payment_status == 'paid' ? 'selected' : '' }}>Đã thanh toán</option>
+                            </select>
                         </td>
                         <td>
                             <form action="{{ route('bookings.destroy', $booking->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn hủy tour này không?');">
@@ -69,4 +67,29 @@
         </table>
     @endif
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('.payment-status').change(function() {
+            var bookingId = $(this).data('booking-id');
+            var paymentStatus = $(this).val();
+
+            $.ajax({
+                url: '{{ route("bookings.updatePaymentStatus") }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: bookingId,
+                    payment_status: paymentStatus
+                },
+                success: function(response) {
+                    alert('Cập nhật trạng thái thanh toán thành công');
+                },
+                error: function(response) {
+                    alert('Cập nhật trạng thái thanh toán thất bại');
+                }
+            });
+        });
+    });
+</script>
 @endsection

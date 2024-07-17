@@ -2,32 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use App\Models\Bank;
 use App\Models\Tour;
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use App\Mail\BookingConfirmed;
+use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
 
     public function index()
     {
-        $user_id = auth()->id();
-        $bookings = Booking::where('user_id', $user_id)
-                           ->with(['tour.area', 'tour.hotel', 'tour.vehicle', 'tour.guide'])
-                           ->get();
-        return view('bookings.index', compact('bookings'));
+        $user = auth()->user();
+
+        if ($user->role === 1) {
+            $bookings = Booking::with(['tour.area', 'tour.hotel', 'tour.vehicle', 'tour.guide'])->get();
+            return view('bookings.index_admin', compact('bookings'));
+        } else {
+            $bookings = Booking::where('user_id', $user->id)
+                            ->with(['tour.area', 'tour.hotel', 'tour.vehicle', 'tour.guide'])
+                            ->get();
+            return view('bookings.index', compact('bookings'));
+        }
     }
 
     public function store(Request $request)
     {
+        try{
+
+        // dd($request);
         $request->validate([
             'tour_id' => 'required|exists:tours,id',
-            'start_date' => 'required|date',
             'adults' => 'required|integer|min:1',
             'children' => 'required|integer|min:0',
-            // 'discount_code' => 'nullable|string',
+
         ]);
+
+        $start_date = explode("|", $request->tour_dates)[0];
+        $end_date = explode("|", $request->tour_dates)[1];
+        // dd($start_date);
+
 
         $existingBooking = Booking::where('user_id', Auth::id())
                                    ->where('tour_id', $request->input('tour_id'))
@@ -48,13 +66,21 @@ class BookingController extends Controller
         $booking = new Booking();
         $booking->user_id = Auth::id();
         $booking->tour_id = $request->input('tour_id');
-        $booking->start_date = $request->input('start_date');
+        $booking->start_date = $start_date;
+        $booking->end_date = $end_date; 
         $booking->number_of_adults = $request->input('adults');
         $booking->number_of_children = $request->input('children');
         $booking->total_price = $totalPrice;
         $booking->save();
 
+        $bank = Bank::first();
+        Mail::to(Auth::user()->email)->send(new BookingConfirmed($booking, $bank));
+
         return redirect()->route('bookings.index')->with('success', 'Đặt tour thành công!');
+        }
+        catch(Exception $e){
+            dd($e);
+        }
     }
 
     public function destroy($id)
@@ -67,5 +93,16 @@ class BookingController extends Controller
         }
 
         return redirect()->route('bookings.index')->with('error', 'Không thể hủy tour này.');
+    }
+
+    public function updatePaymentStatus(Request $request)
+    {
+        $booking = Booking::find($request->id);
+        if ($booking) {
+            $booking->payment_status = $request->payment_status;
+            $booking->save();
+            return response()->json(['success' => true]);
+        }
+        return response()->json(['success' => false], 404);
     }
 }

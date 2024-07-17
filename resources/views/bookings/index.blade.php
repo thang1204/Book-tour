@@ -45,7 +45,17 @@
                         <td>{{ $booking->number_of_children }}</td>
                         <td>{{ number_format($booking->total_price) }} VND</td>
                         <td>{{ $booking->order_code }}</td>
-                        <td>{{ $booking->payment_status }}</td>
+                        <td>
+                            @if ($booking->payment_status == 'unpaid')
+                                Chưa thanh toán
+                            @elseif ($booking->payment_status == 'deposit')
+                                Đã đặt cọc
+                            @elseif ($booking->payment_status == 'paid')
+                                Đã thanh toán
+                            @else
+                                Không xác định
+                            @endif
+                        </td>
                         <td>
                             <form action="{{ route('bookings.destroy', $booking->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn hủy tour này không?');">
                                 @csrf

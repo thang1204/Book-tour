@@ -66,7 +66,10 @@
             </div>
             <div class="qr-code">
                 <p>Quét mã để thanh toán</p>
-                <img src="data:image/jpeg;base64,{{ $qrCodeBase64 }}" alt="QR Code">
+                {{-- @dd( $qrCodeBase64) --}}
+                {{-- <p>{{ $qrCodeBase64 }}</p> --}}
+                <img src="https://github.com/thang1204/Book-tour/blob/main/public/images/QRcode.jpg?raw=true" alt="">
+                {{-- <img src="data:image/png;base64,{{ trim($qrCodeBase64) }}" alt="QR Code"> --}}
                 <p>Ngân hàng: {{ $bank->bank_name }}</p>
                 <p>Số tài khoản: {{ $bank->account_number }}</p>
                 <p>Chủ tài khoản: {{ $bank->account_holder_name }}</p>

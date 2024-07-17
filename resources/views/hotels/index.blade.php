@@ -28,12 +28,12 @@
                     <td>{{ $hotel->stars ?? 'N/A' }}<i class="fa-solid fa-star" style="color: rgb(255, 242, 0)"></i></td>
                     <td>{{ $hotel->phone ?? 'N/A' }}</td>
                     <td>{{ $hotel->description ?? 'N/A' }}</td>
-                    <td>
-                        <a href="{{ route('hotels.edit', ['hotel' => $hotel->id]) }}"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <form action="{{ route('hotels.destroy', ['hotel' => $hotel->id]) }}" method="POST">
+                    <td style="text-align: left; white-space: nowrap;">
+                        <a href="{{ route('hotels.edit', ['hotel' => $hotel->id]) }}" class="btn btn-warning">Chỉnh Sửa</a>
+                        <form action="{{ route('hotels.destroy', ['hotel' => $hotel->id]) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa khách sạn này?')">Xóa</button>
                         </form>
                     </td>
                 </tr>

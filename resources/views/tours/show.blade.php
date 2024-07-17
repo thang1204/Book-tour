@@ -75,7 +75,7 @@
                 <p class="m-0">Đánh giá: 4.4 (25)</p>
             </div>
             <div>
-                {{ $tour->description }}
+                {{ $tour->description }} 
             </div>
         </div>
         <div class="col-4 book-tour">
@@ -86,9 +86,13 @@
             
                 <div class="form-group">
                     <label>Chọn ngày đi</label>
-                    <input type="date" id="startDate" name="start_date" class="form-control">
-                    <label>Ngày về</label>
-                    <input type="date" id="endDate" name="end_date" class="form-control" readonly>
+                    <select name="tour_dates">
+                        @foreach($tour->tourDates as $tourDate)
+                            <option value="{{ $tourDate->start_date }}|{{ $tourDate->end_date }}">
+                                Ngày đi: {{ $tourDate->start_date }} -> {{ $tourDate->end_date }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
             
                 <div class="form-group">

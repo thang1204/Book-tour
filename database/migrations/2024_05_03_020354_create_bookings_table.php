@@ -21,6 +21,8 @@ return new class extends Migration
             $table->tinyInteger('number_of_children');
             $table->integer('total_price');
             $table->dateTime('booking_date')->default(now());
+            $table->enum('payment_status', ['unpaid', 'deposit', 'paid'])->default('unpaid');
+            $table->string('order_code')->unique()->nullable();
             $table->timestamps();
         });
     }

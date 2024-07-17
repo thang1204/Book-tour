@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container mt-5">
     <h1>Quản lý Tour</h1>
-    <a href="{{ route('tour.create') }}" class="my-4 create-tour-btn">Tạo Tour</a>
+    <a href="{{ route('tour.create') }}" class="btn btn-primary mb-3">Tạo Tour</a>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -31,7 +31,7 @@
                     <td>{{ $tour->guide->name ?? 'N/A' }}</td>
                     <td>
                         @if ($tour->tourDates->isNotEmpty())
-                            @foreach ($tour->tourDates as $index => $tourDate)
+                            @foreach ($tour->tourDates as $tourDate)
                                 {{ \Carbon\Carbon::parse($tourDate->start_date)->format('d/m/Y') }}<br>
                             @endforeach
                         @else
@@ -40,7 +40,7 @@
                     </td>
                     <td>
                         @if ($tour->tourDates->isNotEmpty())
-                            @foreach ($tour->tourDates as $index => $tourDate)
+                            @foreach ($tour->tourDates as $tourDate)
                                 {{ \Carbon\Carbon::parse($tourDate->end_date)->format('d/m/Y') }}<br>
                             @endforeach
                         @else
@@ -49,12 +49,12 @@
                     </td>
                     <td>{{ number_format($tour->price, 0, ',', '.') }}.000₫</td>
                     <td>{{ $tour->number_of_participants }}</td>
-                    <td>
-                        <a href="{{ route('tour.edit', ['tour' => $tour->id]) }}" class="btn btn-warning btn-sm">Chỉnh sửa</a>
-                        <form action="{{ route('tour.destroy', ['tour' => $tour->id]) }}" method="POST" style="display:inline-block;">
+                    <td style="text-align: left; white-space: nowrap;">
+                        <a href="{{ route('tour.edit', ['tour' => $tour->id]) }}" class="btn btn-warning btn-sm" style="display:inline;">Chỉnh sửa</a>
+                        <form action="{{ route('tour.destroy', ['tour' => $tour->id]) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
                         </form>
                     </td>
                 </tr>

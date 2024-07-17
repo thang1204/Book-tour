@@ -70,10 +70,6 @@
     </div>
 
     {{--  --}}
-
-
-    <h1 class="text-align-center mb-3">Điểm đến yêu thích nước ngoài</h1>
-    
 </div>
 <script>
     $(document).ready(function() {

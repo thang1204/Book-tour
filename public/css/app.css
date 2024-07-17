@@ -8,6 +8,11 @@ html, body {
     height: 100%;
 }
 
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
 .truncate-2-line {
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -30,12 +35,13 @@ a{
     align-items: center;
 }
 .btn-login{
-    background-color: #008768;
+    background-color: #131142;
     border-radius: 8px;
+    height: 40px;
     border: none;
 }
 .btn-login:hover {
-    background-color: #09e2af;
+    background-color:  #05009d;
 }
 
 .btn-icon{
@@ -60,7 +66,7 @@ a{
 .item-tour{
     border-radius: 8px;
     background-color: #e9ecef;
-    min-height: 480px;
+    min-height: 450px;
 
 }
 .item-tour-image {
@@ -82,8 +88,12 @@ a{
     height: 100%;
     object-fit: contain;
     transform: translate(-50%, -50%);
+    transition: transform 0.3s ease; /* Add transition for smooth zoom effect */
 }
 
+.item-tour:hover .item-tour-image img {
+    transform: translate(-50%, -50%) scale(1.1);
+}
 
 /* Slide */
 .swiper {
@@ -179,26 +189,6 @@ a{
     text-align: center;
     width: 100%;
     cursor: pointer;
-}
-
-
-/*  */
-footer {
-    background-color: #d7e0ff;
-    color: #fff;
-    padding: 10px 0;
-    margin: 0 auto;
-     width: 100%;
-}
-
-.footer-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 20px;
 }
 
 .btn-book-now {
@@ -379,3 +369,86 @@ tr:nth-child(even) {
 .btn-danger:hover {
     background-color: #c82333;
 }
+
+/*  */
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f8f9fa; /* Màu nền của footer */
+}
+
+.footer-logo img {
+    max-height: 50px;
+}
+
+.footer-links a, .footer-social a {
+    color: #000;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover, .footer-social a:hover {
+    color: #007bff;
+}
+
+.footer-social a i {
+    font-size: 20px;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 10px;
+    background-color: #e9ecef;
+}
+
+footer {
+    margin-top: auto;
+    background-color: #f8f9fa;
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+/*  */
+
+.text-header{
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.text-header:hover{
+    background-color: #131142;
+    color: white;
+}
+
+.avatar_hover {
+    transition: transform 0.1s ease-in-out;
+}
+
+.avatar_hover:hover {
+    transform: scale(1.1);
+}
+
+.image-list .item-image-top {
+    display: block;
+    overflow: hidden;
+    position: relative;
+}
+
+.image-list .item-image-top img {
+    transition: transform 0.3s ease-in-out;
+    display: block;
+}
+
+.image-list .item-image-top:hover img {
+    transform: scale(1.2);
+}
+
+
+.table th {
+    vertical-align: top;
+}
+

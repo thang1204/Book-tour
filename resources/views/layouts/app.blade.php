@@ -20,6 +20,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 </head>
 <body>
@@ -38,7 +42,7 @@
                     <p class="m-0 text-tour">Thông tin</p>
                 </a>
                 <a href="{{ route('bookings.index') }}" class="d-flex align-items-center text-header">
-                    <i class="fa-solid fa-bookmark"></i>
+                    <p class="m-0 text-tour">Đơn hàng</p>
                 </a>
 
                 @guest
@@ -76,48 +80,50 @@
                         </div>
                         <div class="offcanvas-body">
                             @can('isAdmin', App\Models\User::class)
-                            <div>
-                                <a href="{{ route('tour.index') }}">Quản lý Tours</a>
+                            <div class="text-navbar">
+                                <a href="{{ route('tour.index') }}" class="text-hover">Quản lý Tours</a>
                             </div>
-                            <hr/>
-                            <div>
-                                <a href="{{ route('customers.index') }}">Quản lý khách hàng</a>
+                            <hr class="m-0">
+                            <div class="text-navbar">
+                                <a href="{{ route('customers.index') }}" class="text-hover">Quản lý khách hàng</a>
                             </div>
-                            <hr/>
-                            <div>
-                                <a href="{{ route('hotels.index') }}">Quản lý khách sạn</a>
+                            <hr class="m-0">
+                            <div class="text-navbar">
+                                <a href="{{ route('hotels.index') }}" class="text-hover">Quản lý khách sạn</a>
                             </div>
-                            <hr/>
-                            <div>
-                                <a href="{{ route('tour_guides.index') }}">Quản lý hướng dẫn viên</a>
+                            <hr class="m-0">
+                            <div class="text-navbar">
+                                <a href="{{ route('tour_guides.index') }}" class="text-hover">Quản lý hướng dẫn viên</a>
                             </div>
-                            <hr/>
-                            <div>
-                                <a href="{{ route('vehicles.index') }}">Quản lý phương tiện</a>
+                            <hr class="m-0">
+                            <div class="text-navbar">
+                                <a href="{{ route('vehicles.index') }}" class="text-hover">Quản lý phương tiện</a>
                             </div>
-                            <hr>
-                            <div>
-                                <a href="{{ route('drivers.index') }}">Quản lý tài xế</a>
+                            <hr class="m-0">
+                            <div class="text-navbar">
+                                <a href="{{ route('drivers.index') }}" class="text-hover">Quản lý tài xế</a>
                             </div>
-                            <hr>
-                            <div>
-                                <a href="{{ route('banks.edit', 1) }}">Tài khoản thanh toán</a>
+                            <hr class="m-0">
+                            <div class="text-navbar">
+                                <a href="{{ route('banks.edit', 1) }}" class="text-hover">Tài khoản thanh toán</a>
                             </div>
-                            <hr>
-                            <div>
-                                <a href="{{ route('statistics.index') }}">Thống kê</a>
+                            <hr class="m-0">
+                            <div class="text-navbar">
+                                <a href="{{ route('statistics.index') }}" class="text-hover">Thống kê</a>
                             </div>
-                            <hr>
+                            <hr class="m-0">
                             
                             @else
                                 {{-- <p>Bạn không phải là admin</p> --}}
                             @endcan
+                            <div class="text-navbar">
 
-                            <a class="" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                document.getElementById('logout-form').submit();">
-                                Đăng xuất
-                            </a>
+                                <a class="text-hover" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                                    Đăng xuất
+                                </a>
+                            </div>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
@@ -202,6 +208,6 @@
         </div>
         
     </footer>
+    @yield('script')
 </body>
 </html>
-@yield('script')

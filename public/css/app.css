@@ -66,7 +66,7 @@ a{
 .item-tour{
     border-radius: 8px;
     background-color: #e9ecef;
-    min-height: 450px;
+    height: fit-content;
 
 }
 .item-tour-image {
@@ -416,7 +416,7 @@ footer {
 .text-header{
     padding: 5px 10px;
     border-radius: 8px;
-    transition: transform 0.3s ease-in-out;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .text-header:hover{
@@ -452,3 +452,86 @@ footer {
     vertical-align: top;
 }
 
+
+.modal-header {
+    background-color: #131142; /* Màu nền */
+    color: white; /* Màu chữ */
+    border-bottom: none; /* Không có viền */
+}
+
+/* Modal title */
+.modal-title {
+    font-weight: bold; /* Chữ đậm */
+    font-size: 1.5rem; /* Kích thước chữ */
+}
+
+/* Modal body */
+.modal-body {
+    padding: 20px; /* Khoảng cách bên trong */
+}
+
+/* Modal footer buttons */
+.modal-footer .btn {
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Hiệu ứng chuyển đổi */
+}
+
+.modal-footer .btn-secondary {
+    background-color: #6c757d; /* Màu nền nút hủy */
+}
+
+.modal-footer .btn-primary {
+    background-color: #131142; /* Màu nền nút đồng ý */
+}
+
+/* Hiệu ứng hover */
+.modal-footer .btn:hover {
+    background-color: #131142; /* Màu nền khi hover */
+    transform: scale(1.05); /* Phóng to một chút khi hover */
+}
+
+.modal-dialog {
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    height: 80%; /* Để đảm bảo nó chiếm đủ chiều cao */
+}
+
+.modal-content {
+    margin: auto; /* Đảm bảo modal content nằm giữa */
+}
+
+.btn-tour{
+    background-color: #131142 !important;
+    color: #fff;
+}
+
+.btn-tour:hover{
+    background-color: #0056b3 !important;
+    color: #fff;
+
+}
+
+.btn-tour-disabled{ 
+    background-color: #6c757d !important;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+
+.text-navbar{
+    padding: 15px 15px 20px 0px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.text-navbar:hover{
+    background-color: #131142;
+    color: white;
+}
+
+.text-hover{
+    padding: 20px 180px 20px 10px;
+}
+
+.text-hover:hover{
+    color: white;
+}

@@ -112,20 +112,52 @@
             
                 <div class="form-group">
                     <label>Giá gốc:</label>
-                    <div id="original_price" class="price">{{ number_format($tour->price, 0, ',', '.') }} VND</div>
+                    <div id="original_price" class="price">{{ number_format($tour->price, 0, '.', '.') }}.000 VND</div>
                 </div>
             
                 <div class="form-group">
                     <label>Tổng Giá Tour:</label>
                     <div id="total_price" class="price">0 VND</div>
                 </div>
-            
-                <button type="submit" class="btn-book-now">Book now</button>
+                @if($totalNumberOfPeople >= $tour->number_of_participants)
+                <button class="btn-tour-disabled">Tour đã hết chỗ</button>
+                @else
+                <button type="button" class="btn-tour" id="showConfirmationModal">Đặt tour</button>
+                @endif
             </form>
         </div>
    </div>
 </div>
+
+
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header justify-content-center">
+          <h5 class="modal-title" id="confirmationModalLabel">Xác nhận đặt tour</h5>
+        </div>
+        <div class="modal-body justify-content-center">
+          <h6 class="text-center">Bạn có chắc chắn muốn đặt tour này không?</h6>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary close" data-dismiss="modal">Hủy</button>
+          <button type="button" class="btn btn-primary" id="confirmBooking">Đồng ý</button>
+        </div>
+      </div>
+    </div>
+</div>
 <script>
+    $(document).ready(function() {
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                toastr.error('{{ $error }}');
+            @endforeach
+        @endif
+
+        @if(session('success'))
+            toastr.success('{{ session('success') }}');
+        @endif
+    });
     var swiper = new Swiper(".mySwiper", {
       navigation: {
         nextEl: ".swiper-button-next",
@@ -133,34 +165,45 @@
       },
     });
 
+    document.getElementById('showConfirmationModal').addEventListener('click', function() {
+        $('#confirmationModal').modal('show');
+    });
+
+    document.getElementById('confirmBooking').addEventListener('click', function() {
+        document.getElementById('booking-form').submit();
+    });
+    document.querySelector('.close').addEventListener('click', function() {
+        $('#confirmationModal').modal('hide');
+    }); 
+
     const adultsInput = document.getElementById('adults');
-        const childrenInput = document.getElementById('children');
-        const originalPriceElement = document.getElementById('original_price');
-        const totalPriceElement = document.getElementById('total_price');
-        const bookNowButton = document.querySelector('.btn-book-now');
+    const childrenInput = document.getElementById('children');
+    const originalPriceElement = document.getElementById('original_price');
+    const totalPriceElement = document.getElementById('total_price');
+    const bookNowButton = document.querySelector('.btn-book-now');
 
-        const originalPrice = parseInt(originalPriceElement.innerText.replace(/[^0-9]/g, ''));
+    const originalPrice = parseInt(originalPriceElement.innerText.replace(/[^0-9]/g, ''));
 
-        function calculateTotalPrice() {
-            const adults = parseInt(adultsInput.value) || 0;
-            const children = parseInt(childrenInput.value) || 0;
-            
-            const childrenPrice = originalPrice / 2;
-            const totalPrice = (adults * originalPrice) + (children * childrenPrice);
-            
-            totalPriceElement.innerText = totalPrice.toLocaleString('vi-VN') + ' VND';
-            
-            totalPriceElement.setAttribute('data-total-price', totalPrice);
-            
-            bookNowButton.setAttribute('data-total-price', totalPrice);
-            bookNowButton.setAttribute('data-adults', adults);
-            bookNowButton.setAttribute('data-children', children);
-        }
+    function calculateTotalPrice() {
+        const adults = parseInt(adultsInput.value) || 0;
+        const children = parseInt(childrenInput.value) || 0;
+        
+        const childrenPrice = originalPrice / 2;
+        const totalPrice = (adults * originalPrice) + (children * childrenPrice);
+        
+        totalPriceElement.innerText = totalPrice.toLocaleString('vi-VN') + ' VND';
+        
+        totalPriceElement.setAttribute('data-total-price', totalPrice);
+        
+        bookNowButton.setAttribute('data-total-price', totalPrice);
+        bookNowButton.setAttribute('data-adults', adults);
+        bookNowButton.setAttribute('data-children', children);
+    }
 
-        // Add event listener to input fields
-        adultsInput.addEventListener('input', calculateTotalPrice);
-        childrenInput.addEventListener('input', calculateTotalPrice);
+    // Add event listener to input fields
+    adultsInput.addEventListener('input', calculateTotalPrice);
+    childrenInput.addEventListener('input', calculateTotalPrice);
 
-        calculateTotalPrice();
+    calculateTotalPrice();
 </script>
 @endsection

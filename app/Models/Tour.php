@@ -16,6 +16,9 @@ class Tour extends Model
 
     protected $fillable = [
         'area_id',
+        'hotel_id',
+        'vehicle_id',
+        'guide_id',
         'name',
         'description',
         'start_date',

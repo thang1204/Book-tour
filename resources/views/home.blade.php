@@ -32,12 +32,12 @@
     <div class="d-flex justify-content-center my-5">
         <hr class="hr-line">
         <div class="px-2" style="min-width: fit-content;">
-            Why you are seeing these recommendations
+            WinND
         </div>
         <hr class="hr-line">
     </div>
     {{--  --}}
-    <h1 class="text-align-center mb-5">Why book with WinND</h1>
+    <h1 class="text-align-center mb-5">Bạn nên đặt tour tại WinND</h1>
     <div class="d-flex justify-content-between">
         <div class="text-align-center" style="width:25%">
             <i class="fa-solid fa-money-bill"></i>
@@ -61,15 +61,6 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-center my-5">
-        <hr class="hr-line">
-        <div class="px-2" style="min-width: fit-content;">
-            Why you are seeing these recommendations
-        </div>
-        <hr class="hr-line">
-    </div>
-
-    {{--  --}}
 </div>
 <script>
     $(document).ready(function() {

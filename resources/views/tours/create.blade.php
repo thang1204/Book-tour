@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container pt-3" style="min-height: 880px;">
+    <h1 class="text-center">Tạo Tour</h1>
     <form id="form-ai-store" action="{{ route('tour.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')

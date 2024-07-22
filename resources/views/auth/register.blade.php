@@ -45,7 +45,7 @@
                 </div>
             </div>
 
-            <div class="d-flex justify-content-center mb-3">
+            <div class="d-flex justify-content-center mb-4">
                 <div class="col-6">
                     <label for="password-confirm" class="col-md-8 col-form-label">{{ __('Xác nhận mật khẩu') }}</label>
                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
@@ -54,7 +54,7 @@
 
             <div class="d-flex justify-content-center mb-3">
                 <button type="submit" class="btn col-6 btn-login text-white">
-                    {{ __('Register') }}
+                    {{ __('Đăng ký') }}
                 </button>
             </div>
         </form>

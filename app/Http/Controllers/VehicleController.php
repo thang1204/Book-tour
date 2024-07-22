@@ -36,7 +36,7 @@ class VehicleController extends Controller
         Vehicle::create($request->all());
 
         return redirect()->route('vehicles.index')
-                         ->with('success', 'Vehicle created successfully.');
+                         ->with('success', 'Phương tiện đã được tạo thành công');
     }
 
     public function show($id)
@@ -67,7 +67,7 @@ class VehicleController extends Controller
         $vehicle->update($request->all());
 
         return redirect()->route('vehicles.index')
-                         ->with('success', 'Vehicle updated successfully.');
+                         ->with('success', 'Phương tiện đã được cập nhật thành công');
     }
 
     public function destroy($id)
@@ -76,6 +76,6 @@ class VehicleController extends Controller
         $vehicle->delete();
 
         return redirect()->route('vehicles.index')
-                         ->with('success', 'Vehicle deleted successfully.');
+                         ->with('success', 'Phương tiện đã được xóa thành công');
     }
 }

@@ -3,11 +3,6 @@
 @section('content')
 <div class="container">
     <h2>Cập Nhật Mã QR Thanh Toán</h2>
-    @if(session('success'))
-        <div class="alert">
-            {{ session('success') }}
-        </div>
-    @endif
     <form action="{{ route('banks.update', $bank->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -30,29 +25,40 @@
         <div id="qr-preview">
             <img id="qr-image" src="{{ Storage::url($bank->qr_code_path) }}" alt="QR Code Preview" style="{{ $bank->qr_code_path ? 'display:block;' : 'display:none;' }}">
         </div>
-            <button type="submit" class="">Cập Nhật</button>
+            <button type="submit" class="btn-tour">Cập Nhật</button>
     </form>
 </div>
 
 <script>
-function previewQRCode() {
-    const file = document.getElementById('qr_code').files[0];
-    const preview = document.getElementById('qr-image');
+    $(document).ready(function() {
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                toastr.error('{{ $error }}');
+            @endforeach
+        @endif
 
-    const reader = new FileReader();
+        @if(session('success'))
+            toastr.success('{{ session('success') }}');
+        @endif
+    });
+    function previewQRCode() {
+        const file = document.getElementById('qr_code').files[0];
+        const preview = document.getElementById('qr-image');
 
-    reader.onloadend = function () {
-        preview.src = reader.result;
-        preview.style.display = 'block';
+        const reader = new FileReader();
+
+        reader.onloadend = function () {
+            preview.src = reader.result;
+            preview.style.display = 'block';
+        }
+
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = '#';
+            preview.style.display = 'none';
+        }
     }
-
-    if (file) {
-        reader.readAsDataURL(file);
-    } else {
-        preview.src = '#';
-        preview.style.display = 'none';
-    }
-}
 </script>
 <style>
     input[type="text"],

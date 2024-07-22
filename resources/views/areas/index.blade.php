@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="top mb-5">
+<div class="container top mb-5">
     @if (session('status'))
             <div class="alert alert-success" role="alert">
                 {{ session('status') }}
@@ -43,11 +43,28 @@
                             font-size: 28px;
                             font-weight: bold;">{{ $tour->name }}</h2>
                             <p class="truncate-2-line">{{ $tour->description }}</p>
-                            <p><i class="fa-regular fa-clock me-1"></i>2 ngày 1 đêm</p>
+                            <p><i class="fa-solid fa-location-dot"  style="width: 25px"></i> Xuất phát từ {{ $area->name }}</p>
+                            @php
+                                $tourBookings = $bookings->where('tour_id', $tour->id);
+                                $totalNumberOfAdults = $tourBookings->sum('number_of_adults');
+                                $totalNumberOfChildren = $tourBookings->sum('number_of_children');
+                                $totalNumberOfPeople = $totalNumberOfAdults + $totalNumberOfChildren;
+                            @endphp
+                            <p>
+                                <i class="fa-solid fa-users" style="width: 25px"></i> 
+                                Số lượng người tham gia {{ $totalNumberOfPeople }}/{{ $tour->number_of_participants }}
+                                @if ($totalNumberOfPeople >= $tour->number_of_participants)
+                                    <span style="color: red;">(Đã hết chỗ)</span>
+                                @else
+                                    <span style="">(Còn {{$tour->number_of_participants - $totalNumberOfPeople}} chỗ)</span>
+
+                                @endif
+
+                            </p>
+                            <p><i class="fa-regular fa-clock me-1" style="width: 25px"></i>2 ngày 1 đêm</p>
                             <p style="font-size: 22px;
                             font-weight: bold;
-                            float: right;
-                            color: #00C1DE;"> {{ number_format($tour->price, 0, '.', '.') . '.000 VNĐ' }}</p>
+                            color: #131142;"> {{ number_format($tour->price, 0, '.', '.') . '.000 VNĐ' }}</p>
                         </div>
                     </a>
                     {{-- <a href="{{ route('tour.edit', ['tour' => $tour->id]) }}" class="action-button">

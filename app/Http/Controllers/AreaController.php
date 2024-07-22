@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Area;
 use App\Models\Tour;
+use App\Models\Booking;
 use Illuminate\Http\Request;
 
 class AreaController extends Controller
@@ -12,9 +13,11 @@ class AreaController extends Controller
     {
         $area = Area::findOrFail($area_id);
         $tours = Tour::where('area_id', $area_id)->get();
+        $bookings = Booking::whereIn('tour_id', $tours->pluck('id'))->get();
         return view('areas.index', [
             'area' => $area,
-            'tours' => $tours
+            'tours' => $tours,
+            'bookings' => $bookings,
         ]);
     }
 

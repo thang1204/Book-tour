@@ -4,14 +4,6 @@
 <div class="container">
     <h1>Danh sách Tour đã đặt</h1>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    @if(session('error'))
-        <div class="alert alert-error">{{ session('error') }}</div>
-    @endif
-
     @if($bookings->isEmpty())
         <p>Bạn chưa đặt tour nào.</p>
     @else
@@ -69,4 +61,17 @@
         </table>
     @endif
 </div>
+<script>
+     $(document).ready(function() {
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                toastr.error('{{ $error }}');
+            @endforeach
+        @endif
+
+        @if(session('success'))
+            toastr.success('{{ session('success') }}');
+        @endif
+    });
+</script>
 @endsection

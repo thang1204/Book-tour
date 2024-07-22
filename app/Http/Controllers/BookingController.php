@@ -20,11 +20,14 @@ class BookingController extends Controller
         $user = auth()->user();
 
         if ($user->role === 1) {
-            $bookings = Booking::with(['tour.area', 'tour.hotel', 'tour.vehicle', 'tour.guide'])->get();
+            $bookings = Booking::with(['tour.area', 'tour.hotel', 'tour.vehicle', 'tour.guide'])
+                            ->orderBy('created_at', 'desc')
+                            ->get();
             return view('bookings.index_admin', compact('bookings'));
         } else {
             $bookings = Booking::where('user_id', $user->id)
                             ->with(['tour.area', 'tour.hotel', 'tour.vehicle', 'tour.guide'])
+                            ->orderBy('created_at', 'desc')
                             ->get();
             return view('bookings.index', compact('bookings'));
         }
@@ -33,8 +36,6 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         try{
-
-        // dd($request);
         $request->validate([
             'tour_id' => 'required|exists:tours,id',
             'adults' => 'required|integer|min:1',
@@ -44,16 +45,8 @@ class BookingController extends Controller
 
         $start_date = explode("|", $request->tour_dates)[0];
         $end_date = explode("|", $request->tour_dates)[1];
-        // dd($start_date);
 
 
-        $existingBooking = Booking::where('user_id', Auth::id())
-                                   ->where('tour_id', $request->input('tour_id'))
-                                   ->exists();
-
-        if ($existingBooking) {
-            return redirect()->back()->withErrors(['error' => 'Bạn đã đặt tour này rồi.']);
-        }
 
         $tour = Tour::find($request->input('tour_id'));
         $pricePerAdult = $tour->price;
@@ -62,6 +55,18 @@ class BookingController extends Controller
         $totalPrice = ($request->input('adults') * $pricePerAdult) +
                       ($request->input('children') * $pricePerChild);
 
+        $bookings = Booking::where('tour_id', $tour->id)->get();
+        $totalNumberOfAdultsBooked = $bookings->sum('number_of_adults');
+        $totalNumberOfChildrenBooked = $bookings->sum('number_of_children');
+        $totalNumberOfPeopleBooked = $totalNumberOfAdultsBooked + $totalNumberOfChildrenBooked;
+
+        $newAdults = $request->input('adults');
+        $newChildren = $request->input('children');
+        $totalNumberOfPeopleIncludingNew = $totalNumberOfPeopleBooked + $newAdults + $newChildren;
+
+        if ($totalNumberOfPeopleIncludingNew > $tour->number_of_participants) {
+            return redirect()->back()->withErrors(['error' => 'Tour đã hết chỗ'])->withInput();
+        }
 
         $booking = new Booking();
         $booking->user_id = Auth::id();
@@ -86,10 +91,18 @@ class BookingController extends Controller
     public function destroy($id)
     {
         $booking = Booking::find($id);
+        $user = auth()->user();
 
-        if ($booking && $booking->user_id == auth()->id()) {
-            $booking->delete();
-            return redirect()->route('bookings.index')->with('success', 'Hủy tour thành công!');
+        if ($user->role === 1) {
+            if ($booking) {
+                $booking->delete();
+                return redirect()->route('bookings.index')->with('success', 'Hủy tour thành công!');
+            }
+        } else {
+            if ($booking && $booking->user_id == $user->id) {
+                $booking->delete();
+                return redirect()->route('bookings.index')->with('success', 'Hủy tour thành công!');
+            }
         }
 
         return redirect()->route('bookings.index')->with('error', 'Không thể hủy tour này.');

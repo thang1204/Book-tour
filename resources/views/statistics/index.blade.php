@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Thống Kê Đặt Tour</h1>
+    <h1 class="text-center">Thống Kê Đặt Tour</h1>
 
     <div class="mb-3">
         <form method="GET" action="{{ route('statistics.index') }}" class="d-inline">
@@ -71,6 +71,10 @@
                 }
             }
         });
+        
+        const vietnameseMonths = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
+        bookingsChart.data.labels = vietnameseMonths;
+        bookingsChart.update();
     });
 </script>
 @endsection

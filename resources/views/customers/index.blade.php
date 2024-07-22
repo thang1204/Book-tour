@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mt-5">
     <h1 class="mb-4">Danh Sách Khách Hàng</h1>
-    {{-- <a href="{{ route('customers.create') }}" class="btn btn-primary mb-3">Thêm Khách Hàng</a> --}}
+    <a href="{{ route('customers.create') }}" class="btn btn-tour mb-3">Thêm Khách Hàng</a>
     <table class="table table-bordered">
         <thead>
             <tr>

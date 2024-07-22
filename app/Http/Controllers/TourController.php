@@ -24,7 +24,7 @@ class TourController extends Controller
 
     public function index()
     {
-        $tours = Tour::with(['area', 'hotel', 'vehicle', 'guide', 'tourDates'])->paginate(10);
+        $tours = Tour::with(['area', 'hotel', 'vehicle', 'guide', 'tourDates'])->paginate(100);
         return view('tours.index', compact('tours'));
     }
 
@@ -48,9 +48,9 @@ class TourController extends Controller
         try{
             $tour = Tour::create([
                 'area_id' => $request->input('area'),
-                'hotel_id' => $request->input('hotel_id'),
-                'vehicle_id' => $request->input('vehicle_id'),
-                'guide_id' => $request->input('guide_id'),
+                'hotel_id' => $request->input('hotel'),
+                'vehicle_id' => $request->input('vehicle'),
+                'guide_id' => $request->input('guide'),
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
                 'price' => $request->input('price'),
@@ -82,7 +82,7 @@ class TourController extends Controller
             } catch (Exception $e) {
                 dd($e->getMessage());
             }
-            return redirect()->route('tour.index')->with('success', 'Tour updated successfully.');
+            return redirect()->route('tour.index')->with('success', 'Tour đã được tạo thành công');
     }
 
     /**
@@ -91,7 +91,17 @@ class TourController extends Controller
     public function show(string $id)
     {
         $tour = Tour::findOrFail($id);
-        return view('tours.show', compact('tour'));
+        $bookings = $tour->bookings;
+        $totalNumberOfAdults = $bookings->sum('number_of_adults');
+        $totalNumberOfChildren = $bookings->sum('number_of_children');
+        $totalNumberOfPeople = $totalNumberOfAdults + $totalNumberOfChildren;
+
+        $area = $tour->area;
+        $hotel = $tour->hotel;
+        $vehicle = $tour->vehicle;
+        $guide = $tour->guide;
+
+        return view('tours.show', compact('tour', 'bookings', 'totalNumberOfPeople', 'area', 'hotel', 'vehicle', 'guide'));
     }
 
     /**
@@ -179,7 +189,7 @@ class TourController extends Controller
             dd($e->getMessage());
         }
 
-        return redirect()->route('tour.index')->with('success', 'Tour updated successfully.');
+        return redirect()->route('tour.index')->with('success', 'Tour đã được cập nhật thành công');
     }
 
     /**
@@ -193,8 +203,9 @@ class TourController extends Controller
             $tour->tourDates()->delete();
             $tour->images()->delete();
             $tour->delete();
+            $tour->bookings()->delete();
             DB::commit();
-            return redirect()->route('tour.index')->with('message', 'Xóa thành công tour');
+            return redirect()->route('tour.index')->with('success', 'Xóa thành công tour');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('tour.index')->with('error', 'Xóa tour thất bại');

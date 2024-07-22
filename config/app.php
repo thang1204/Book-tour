@@ -65,7 +65,8 @@ return [
     |
     */
 
-    'timezone' => env('APP_TIMEZONE', 'UTC'),
+    // 'timezone' => env('APP_TIMEZONE', 'UTC'),
+    'timezone' => 'Asia/Ho_Chi_Minh',
 
     /*
     |--------------------------------------------------------------------------
@@ -78,7 +79,8 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'en'),
+    // 'locale' => env('APP_LOCALE', 'en'),
+    'locale' => 'vi',
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 

@@ -91,10 +91,18 @@ class BookingController extends Controller
     public function destroy($id)
     {
         $booking = Booking::find($id);
+        $user = auth()->user();
 
-        if ($booking && $booking->user_id == auth()->id()) {
-            $booking->delete();
-            return redirect()->route('bookings.index')->with('success', 'Hủy tour thành công!');
+        if ($user->role === 1) {
+            if ($booking) {
+                $booking->delete();
+                return redirect()->route('bookings.index')->with('success', 'Hủy tour thành công!');
+            }
+        } else {
+            if ($booking && $booking->user_id == $user->id) {
+                $booking->delete();
+                return redirect()->route('bookings.index')->with('success', 'Hủy tour thành công!');
+            }
         }
 
         return redirect()->route('bookings.index')->with('error', 'Không thể hủy tour này.');

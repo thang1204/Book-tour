@@ -6,9 +6,27 @@ use Carbon\Carbon;
 use App\Models\Tour;
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StatisticsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $user = Auth::user();
+            
+            // Kiểm tra xem người dùng có role = 1 không
+            if ($user && $user->role !== 1) {
+                // Đặt thông báo vào session
+                session()->flash('error', 'Bạn không có quyền truy cập.');
+                // Chuyển hướng về trang home
+                return redirect()->route('home');
+            }
+
+            return $next($request);
+        });
+    }
+    
     public function index(Request $request)
     {
         // Lấy năm hiện tại hoặc năm được chọn từ request

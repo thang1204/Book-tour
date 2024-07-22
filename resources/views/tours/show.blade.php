@@ -35,7 +35,7 @@
                 <div class="swiper-button-prev"></div>
             </div>
             <div class="d-flex justify-content-center">
-                @foreach($tour->images()->get() as $index => $image)
+                {{-- @foreach($tour->images()->get() as $index => $image)
                     <div class="rounded-3 me-2" style="
                         width: 200px;
                         height: 100%;
@@ -56,27 +56,9 @@
                         object-fit: contain;
                         transform: translate(-50%, -50%);">
                     </div>
-                @endforeach
+                @endforeach --}}
             </div>
-            <div class="d-flex justify-content-evenly block-infor">
-                <div class="d-flex align-items-center">
-                    <i class="fa-solid fa-location-dot me-1"></i>
-                    <p class="m-0">Hà Nội</p>
-                </div>
-                <div class="d-flex align-items-center">
-                    <i class="fa-regular fa-clock me-1"></i>
-                    <p class="m-0">3 ngày 2 đêm</p>
-                </div>
-                <div class="d-flex align-items-center">
-                    <p class="m-0 me-1">Phương tiện: </p>
-                    <i class="fa-solid fa-plane me-1"> </i>
-                    <i class="fa-solid fa-bus"></i>
-                </div>
-                <p class="m-0">Đánh giá: 4.4 (25)</p>
-            </div>
-            <div>
-                {{ $tour->description }} 
-            </div>
+            
         </div>
         <div class="col-4 book-tour">
             <h1 class="mt-5">Lịch Trình và Giá Tour</h1>
@@ -105,10 +87,10 @@
                     <input type="number" class="form-control" id="children" name="children" value="0" min="0" onchange="updateTotalPrice()">
                 </div>
             
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label for="discount_code">Mã giảm giá</label>
                     <input type="text" class="form-control" id="discount_code" name="discount_code">
-                </div>
+                </div> --}}
             
                 <div class="form-group">
                     <label>Giá gốc:</label>
@@ -119,14 +101,84 @@
                     <label>Tổng Giá Tour:</label>
                     <div id="total_price" class="price">0 VND</div>
                 </div>
-                @if($totalNumberOfPeople >= $tour->number_of_participants)
-                <button class="btn-tour-disabled">Tour đã hết chỗ</button>
+                @guest
+                    <button href="{{ route('login') }}" class="btn btn-tour">Đăng nhập để đặt tour</button>
                 @else
-                <button type="button" class="btn-tour" id="showConfirmationModal">Đặt tour</button>
-                @endif
+                    @if($totalNumberOfPeople >= $tour->number_of_participants)
+                    <button class="btn-tour-disabled">Tour đã hết chỗ</button>
+                    @else
+                    <button type="button" class="btn-tour" id="showConfirmationModal">Đặt tour</button>
+                    @endif
+                @endguest
+                
             </form>
         </div>
    </div>
+    <div class="card mb-3 mt-3">
+        <div class="card-header">
+            <h3>Địa điểm xuất phát</h3>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Tên: {{ $area->name }}</h5>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3>Khách Sạn</h3>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Tên: {{ $hotel->name }}</h5>
+            <p class="card-text">Địa chỉ: {{ $hotel->address }}</p>
+            <p class="card-text">Đánh giá: {{ $hotel->stars }} <i class="fa-solid fa-star" style="color: yellow;"></i></p>
+            <p class="card-text">Điện thoại: {{ $hotel->phone }}</p>
+            <p class="card-text">Mô tả: {{ $hotel->description }}</p>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3>Phương Tiện</h3>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Loại: {{ $vehicle->type }}</h5>
+            <p class="card-text">Mẫu: {{ $vehicle->model }}</p>
+            <p class="card-text">Biển số: {{ $vehicle->license_plate }}</p>
+            <p class="card-text">Sức chứa: {{ $vehicle->capacity }}</p>
+            <p class="card-text">ID tài xế: {{ $vehicle->driver_id }}</p>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3>Hướng Dẫn Viên</h3>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Tên: {{ $guide->name }}</h5>
+            <p class="card-text">Điện thoại: {{ $guide->phone }}</p>
+            <p class="card-text">Email: {{ $guide->email }}</p>
+            <p class="card-text">Tiểu sử: {{ $guide->bio }}</p>
+            <div class="mt-3">
+                <img src="{{ asset('storage/' . $guide->avatar) }}" alt="{{ $guide->name }}" class="img-thumbnail" style="max-width: 100%; height: auto;">
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-evenly block-infor">
+        <div class="d-flex align-items-center">
+            <i class="fa-solid fa-location-dot me-1"></i>
+            <p class="m-0">Hà Nội</p>
+        </div>
+        <div class="d-flex align-items-center">
+            <i class="fa-regular fa-clock me-1"></i>
+            <p class="m-0">3 ngày 2 đêm</p>
+        </div>
+        <div class="d-flex align-items-center">
+            <p class="m-0 me-1">Phương tiện: </p>
+            <i class="fa-solid fa-plane me-1"> </i>
+            <i class="fa-solid fa-bus"></i>
+        </div>
+        <p class="m-0">Đánh giá: 4.4 (25)</p>
+    </div>
 </div>
 
 

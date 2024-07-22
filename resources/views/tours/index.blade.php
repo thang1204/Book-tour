@@ -23,7 +23,7 @@
         <tbody>
             @foreach ($tours as $index => $tour)
                 <tr>
-                    <td>{{ $tour->id }}</td>
+                    <td>{{ $index + 1 }}</td>
                     <td>{{ $tour->name }}</td>
                     <td>{{ $tour->area->name }}</td>
                     <td>{{ $tour->hotel->name ?? 'N/A' }}</td>
@@ -82,7 +82,6 @@
         </tbody>
     </table>
 
-    {{ $tours->links() }}
 </div>
 <script>
     $(document).ready(function() {

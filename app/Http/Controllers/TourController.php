@@ -24,7 +24,7 @@ class TourController extends Controller
 
     public function index()
     {
-        $tours = Tour::with(['area', 'hotel', 'vehicle', 'guide', 'tourDates'])->paginate(10);
+        $tours = Tour::with(['area', 'hotel', 'vehicle', 'guide', 'tourDates'])->paginate(100);
         return view('tours.index', compact('tours'));
     }
 
@@ -95,7 +95,13 @@ class TourController extends Controller
         $totalNumberOfAdults = $bookings->sum('number_of_adults');
         $totalNumberOfChildren = $bookings->sum('number_of_children');
         $totalNumberOfPeople = $totalNumberOfAdults + $totalNumberOfChildren;
-        return view('tours.show', compact('tour', 'bookings', 'totalNumberOfPeople'));
+
+        $area = $tour->area;
+        $hotel = $tour->hotel;
+        $vehicle = $tour->vehicle;
+        $guide = $tour->guide;
+
+        return view('tours.show', compact('tour', 'bookings', 'totalNumberOfPeople', 'area', 'hotel', 'vehicle', 'guide'));
     }
 
     /**

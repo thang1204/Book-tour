@@ -412,6 +412,10 @@ footer {
 }
 
 /*  */
+.text-headered{
+    background-color: #131142;
+    color: white;
+}
 
 .text-header{
     padding: 5px 10px;
@@ -529,9 +533,14 @@ footer {
 }
 
 .text-hover{
-    padding: 20px 180px 20px 10px;
+    padding: 20px 170px 20px 10px;
 }
 
 .text-hover:hover{
     color: white;
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after{
+    color: white !important;
 }

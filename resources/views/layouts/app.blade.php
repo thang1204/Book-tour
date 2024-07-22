@@ -35,13 +35,13 @@
                     <p class="m-0 text-tour">WinND</p>
                 </a>
 
-                <a href="{{ route('home') }}" class="d-flex align-items-center text-header">
+                <a href="{{ route('home') }}" class="d-flex align-items-center text-header {{ request()->routeIs('home') ? 'text-headered' : '' }}">
                     <p class="m-0 text-tour">Trang chủ</p>
                 </a>
-                <a href="" class="d-flex align-items-center text-header">
+                <a href="{{ route('about') }}" class="d-flex align-items-center text-header {{ request()->routeIs('about') ? 'text-headered' : '' }}">
                     <p class="m-0 text-tour">Thông tin</p>
                 </a>
-                <a href="{{ route('bookings.index') }}" class="d-flex align-items-center text-header">
+                <a href="{{ route('bookings.index') }}" class="d-flex align-items-center text-header {{ request()->routeIs('bookings.index') ? 'text-headered' : '' }}">
                     <p class="m-0 text-tour">Đơn hàng</p>
                 </a>
 
@@ -112,9 +112,13 @@
                                 <a href="{{ route('statistics.index') }}" class="text-hover">Thống kê</a>
                             </div>
                             <hr class="m-0">
+                            {{-- <div class="text-navbar">
+                                <a href="{{ route('areanew.index') }}" class="text-hover">Quản lý khu vực</a>
+                            </div>
+                            <hr class="m-0"> --}}
                             
                             @else
-                                {{-- <p>Bạn không phải là admin</p> --}}
+                               
                             @endcan
                             <div class="text-navbar">
 
@@ -189,15 +193,15 @@
         </main>
     </div>
     <footer>
-        <div class="footer-content">
+        <div class="footer-content container">
             <div class="footer-logo">
                 <img src="{{ asset('/images/logo-tour.jpg') }}" class="logo-tour" alt="Logo">
             </div>
             <div class="footer-links d-flex justify-content-between align-items-center gap-3">
                     <a href="#">Home</a>
-                    <a href="#">About Us</a>
-                    <a href="#">Services</a>
-                    <a href="#">Contact</a>
+                    <a href="#">Giới thiệu</a>
+                    <a href="#">Dịch vụ</a>
+                    <a href="#">Kết nối</a>
             </div>
             <div class="footer-social d-flex justify-content-between align-items-center gap-3">
                     <a href="#"><i class="fab fa-facebook"></i></a>

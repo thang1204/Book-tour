@@ -3,15 +3,22 @@
 @section('content')
 <div class="container">
     <h1 class="text-center">Danh sách Tour đã đặt</h1>
+    <form method="GET" action="{{ route('bookings.search') }}" class="text-center w-100 mb-3">
+        <div class="input-group">
+            <input type="text" name="query" class="form-control" placeholder="Tìm kiếm theo Tour, Mã đơn, Trạng thái thanh toán..." value="{{ request('query') }}">
+            <button class="btn btn-tour" type="submit">Tìm kiếm</button>
+        </div>
+    </form>
     @if($bookings->isEmpty())
         <p>Bạn chưa đặt tour nào.</p>
     @else
-        <table>
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Khách hàng</th>
                     <th>Tour</th>
                     <th>Ngày bắt đầu</th>
+                    <th>Ngày kết thúc</th>
                     <th>Khu vực</th>
                     <th>Khách sạn</th>
                     <th>Phương tiện</th>
@@ -31,6 +38,7 @@
                         <td>{{ $booking->user->name }}</td>
                         <td>{{ $booking->tour->name }}</td>
                         <td>{{ $booking->start_date }}</td>
+                        <td>{{ $booking->end_date }}</td>
                         <td>{{ $booking->tour->area->name ?? 'N/A' }}</td>
                         <td>{{ $booking->tour->hotel->name ?? 'N/A' }}</td>
                         <td>{{ $booking->tour->vehicle->type ?? 'N/A' }}</td>
@@ -41,14 +49,14 @@
                         <td>{{ $booking->order_code }}</td>
                         <td>{{ $booking->created_at }}</td>
                         <td>
-                            <select class="payment-status" data-booking-id="{{ $booking->id }}">
+                            <select class="payment-status form-select-pay" data-booking-id="{{ $booking->id }}">
                                 <option value="unpaid" {{ $booking->payment_status == 'unpaid' ? 'selected' : '' }}>Chưa thanh toán</option>
                                 <option value="deposit" {{ $booking->payment_status == 'deposit' ? 'selected' : '' }}>Đã đặt cọc</option>
                                 <option value="paid" {{ $booking->payment_status == 'paid' ? 'selected' : '' }}>Đã thanh toán</option>
                             </select>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-danger" id="showCancelModal{{ $index }}">Hủy Tour</button>
+                            <button type="button" class="btn btn-danger" id="showCancelModal{{ $index }}">Hủy</button>
 
                             <div class="modal fade" id="cancelConfirmationModal{{ $index }}" tabindex="-1" role="dialog" aria-labelledby="cancelConfirmationModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
@@ -123,13 +131,23 @@
                     payment_status: paymentStatus
                 },
                 success: function(response) {
-                    alert('Cập nhật trạng thái thanh toán thành công');
+                    toastr.success('Cập nhật trạng thái thanh toán thành công');
                 },
                 error: function(response) {
-                    alert('Cập nhật trạng thái thanh toán thất bại');
+                    toastr.error('Cập nhật trạng thái thanh toán thất bại');
                 }
             });
         });
     });
+    document.addEventListener('DOMContentLoaded', function() {
+        var searchInput = document.getElementById('search-input');
+
+        searchInput.addEventListener('blur', function() {
+            if (searchInput.value.trim() === '') {
+                window.location.href = '{{ route('bookings.search') }}'; // Truyền đi yêu cầu tìm kiếm tất cả
+            }
+        });
+    });
+
 </script>
 @endsection

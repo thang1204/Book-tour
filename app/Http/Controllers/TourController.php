@@ -14,6 +14,7 @@ use Ramsey\Uuid\Guid\Guid;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class TourController extends Controller
@@ -21,6 +22,37 @@ class TourController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // public function __construct()
+    // {
+    //     $this->middleware(function ($request, $next) {
+    //         $currentRouteName = $request->route()->getName();
+
+    //         // Nếu route là 'index', cho phép truy cập mà không cần đăng nhập
+    //         if ($currentRouteName === 'index') {
+    //             return $next($request);
+    //         }
+
+    //         // Kiểm tra xác thực người dùng
+    //         if (!Auth::check()) {
+    //             // Đặt thông báo vào session
+    //             session()->flash('error', 'Bạn cần đăng nhập.');
+    //             // Chuyển hướng về trang login
+    //             return redirect()->route('login');
+    //         }
+
+    //         $user = Auth::user();
+
+    //         // Kiểm tra xem người dùng có role = 1 không
+    //         if ($user->role !== 1) {
+    //             // Đặt thông báo vào session
+    //             session()->flash('error', 'Bạn không có quyền truy cập.');
+    //             // Chuyển hướng về trang home
+    //             return redirect()->route('home');
+    //         }
+
+    //         return $next($request);
+    //     });
+    // }
 
     public function index()
     {
@@ -45,7 +77,23 @@ class TourController extends Controller
      */
     public function store(Request $request)
     {
-        try{
+        $request->validate([
+            'area' => 'required|exists:areas,id',
+            'hotel' => 'required|exists:hotels,id',
+            'vehicle' => 'required|exists:vehicles,id',
+            'guide' => 'required|exists:tour_guides,id',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric',
+            'number_of_participants' => 'required|integer|min:1',
+            'start_date.*' => 'required|date',
+            'end_date.*' => 'required|date|after_or_equal:start_date.*',
+            'image.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ], [
+            'end_date.*.after_or_equal' => 'Ngày kết thúc phải sau hoặc bằng ngày bắt đầu.',
+        ]);
+    
+        try {
             $tour = Tour::create([
                 'area_id' => $request->input('area'),
                 'hotel_id' => $request->input('hotel'),
@@ -56,10 +104,10 @@ class TourController extends Controller
                 'price' => $request->input('price'),
                 'number_of_participants' => $request->input('number_of_participants'),
             ]);
-
+    
             $startDates = $request->input('start_date');
             $endDates = $request->input('end_date');
-
+    
             for ($i = 0; $i < count($startDates); $i++) {
                 TourDate::create([
                     'tour_id' => $tour->id,
@@ -72,17 +120,17 @@ class TourController extends Controller
                 foreach ($request->file('image') as $image) {
                     $imageName = Str::uuid() . '.' . $image->getClientOriginalExtension();
                     $path = $image->storeAs('public/images/tours/' . $tour->id, $imageName);
-        
+    
                     TourImage::create([
                         'tour_id' => $tour->id,
                         'image' => Storage::url($path),
                     ]);
                 }
             }
-            } catch (Exception $e) {
-                dd($e->getMessage());
-            }
-            return redirect()->route('tour.index')->with('success', 'Tour đã được tạo thành công');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+        }
+        return redirect()->route('tour.index')->with('success', 'Tour đã được tạo thành công');
     }
 
     /**
@@ -122,14 +170,29 @@ class TourController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'area' => 'required|exists:areas,id',
+            'hotel' => 'required|exists:hotels,id',
+            'vehicle' => 'required|exists:vehicles,id',
+            'guide' => 'required|exists:tour_guides,id',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric',
+            'number_of_participants' => 'required|integer|min:1',
+            'start_date.*' => 'required|date',
+            'end_date.*' => 'required|date|after_or_equal:start_date.*',
+            'image.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ], [
+            'end_date.*.after_or_equal' => 'Ngày kết thúc phải sau hoặc bằng ngày bắt đầu.',
+        ]);
         try {
             $tour = Tour::findOrFail($id);
 
             $tour->update([
                 'area_id' => $request->input('area'),
-                'hotel_id' => $request->input('hotel_id'),
-                'vehicle_id' => $request->input('vehicle_id'),
-                'guide_id' => $request->input('guide_id'),
+                'hotel_id' => $request->input('hotel'),
+                'vehicle_id' => $request->input('vehicle'),
+                'guide_id' => $request->input('guide'),
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
                 'price' => $request->input('price'),

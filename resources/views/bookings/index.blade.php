@@ -2,16 +2,16 @@
 
 @section('content')
 <div class="container">
-    <h1>Danh sách Tour đã đặt</h1>
-
+    <h1 class="text-center">Danh sách Tour đã đặt</h1>
     @if($bookings->isEmpty())
         <p>Bạn chưa đặt tour nào.</p>
     @else
-        <table>
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Tour</th>
                     <th>Ngày bắt đầu</th>
+                    <th>Ngày kết thúc</th>
                     <th>Khu vực</th>
                     <th>Khách sạn</th>
                     <th>Phương tiện</th>
@@ -20,6 +20,7 @@
                     <th>Số trẻ em</th>
                     <th>Tổng giá</th>
                     <th>Mã đơn</th>
+                    <th>Thời gian đặt tour</th>
                     <th>Trạng thái thanh toán</th>
                     <th>Hành động</th>
                 </tr>
@@ -27,32 +28,35 @@
             <tbody>
                 @foreach($bookings as $booking)
                     <tr>
-                        <td>{{ $booking->tour->name }}</td>
+                        {{-- <td>{{ $booking->tour->name }}</td> --}}
+                        <td>{{ optional($booking->tour)->name }}</td>
                         <td>{{ $booking->start_date }}</td>
+                        <td>{{ $booking->end_date }}</td>
                         <td>{{ $booking->tour->area->name ?? 'N/A' }}</td>
                         <td>{{ $booking->tour->hotel->name ?? 'N/A' }}</td>
                         <td>{{ $booking->tour->vehicle->type ?? 'N/A' }}</td>
                         <td>{{ $booking->tour->guide->name ?? 'N/A' }}</td>
                         <td>{{ $booking->number_of_adults }}</td>
                         <td>{{ $booking->number_of_children }}</td>
-                        <td>{{ number_format($booking->total_price) }} VND</td>
+                        <td>{{ number_format($booking->total_price) }},000VND</td>
                         <td>{{ $booking->order_code }}</td>
-                        <td>
+                        <td>{{ $booking->created_at }}</td>
+                        <td class="text-center">
                             @if ($booking->payment_status == 'unpaid')
-                                Chưa thanh toán
+                                <span class="badge bg-secondary p-2">Chưa thanh toán</span>
                             @elseif ($booking->payment_status == 'deposit')
-                                Đã đặt cọc
+                                <span class="badge bg-warning text-dark p-2">Đã đặt cọc</span>
                             @elseif ($booking->payment_status == 'paid')
-                                Đã thanh toán
+                                <span class="badge bg-success p-2">Đã thanh toán</span>
                             @else
-                                Không xác định
+                                <span class="badge bg-dark p-2">Không xác định</span>
                             @endif
                         </td>
                         <td>
                             <form action="{{ route('bookings.destroy', $booking->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn hủy tour này không?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Hủy Tour</button>
+                                <button type="submit" class="btn btn-danger">Hủy</button>
                             </form>
                         </td>
                     </tr>

@@ -2,12 +2,14 @@
 
 @section('content')
 <div class="container pt-3" style="min-height: 880px;">
+    <h1 class="text-center">Chỉnh sửa Tour</h1>
+
     <form id="form-ai-store" action="{{ route('tour.update', ['tour' => $tour->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="d-flex align-items-center justify-content-between">
-            <a href="{{ route('tour.index') }}" class="btn-create-ai" id="btn-back-ai"><i class="fas fa-long-arrow-alt-left"></i>&nbsp; Trở lại</a>
-            <button data-url="" class="btn-create-ai" id="btn-save-ai">Chỉnh sửa</button>
+            <a href="{{ route('tour.index') }}" class="btn btn-tour" id="btn-back-ai"><i class="fas fa-long-arrow-alt-left"></i>&nbsp; Trở lại</a>
+            <button data-url="" class="btn btn-tour" id="btn-save-ai">Chỉnh sửa</button>
         </div>
         <div id="message-err" class="text-danger mt-4"></div> 
         <div class="form-group pt-3">
@@ -77,7 +79,7 @@
             </div>
             @endforeach
         </div>
-        <a id="btn-add-date-range" class="btn btn-secondary mb-3">＋Thêm khoảng thời gian</a>
+        <a id="btn-add-date-range" class="btn btn-tour mb-3">＋Thêm khoảng thời gian</a>
     
         <div class="form-group">
             <label for="price" class="control-label text-muted mb-0">Giá Tour</label>
@@ -92,12 +94,11 @@
         <div>
             <div class="d-flex align-items-center justify-content-between">
                 <h3>Ảnh tour</h3>
-                <a class="btn-add-image fs-16 mb-3" id="btn-add-img-tour">＋Thêm ảnh</a>
+                <a class="btn-add-image fs-16 mb-3 btn btn-tour" id="btn-add-img-tour">＋Thêm ảnh</a>
             </div>
             <div class="form-group list-item-image sort-data-pr-title">
                 @foreach($tour->images()->get() as $index => $image)
                 <div class="sortable-data-pr-title col list-unstyled d-flex align-items-center flex-wrap mb-3 gap-3 div-ai-image">
-                    <i class="fas fa-grip-vertical text-info cursor-move fs-26"></i>
                     <div class="rounded-3 me-2 no-drag-title" style="
                         width: 250px;
                         height: 100%;
@@ -123,7 +124,7 @@
                         <div class="col-12 d-flex justify-content-between">
                             <input type="hidden" name="images[{{ $index }}][id]" value="{{ $image->id }}">
                             <input type="file" name="images[{{ $index }}][file]" id="image-input-{{ $index }}" onchange="previewImage(event, {{ $index }})">
-                            <a class="btn-delete-ai-image bg-light"><i class="fas fa-trash-alt fs-26"></i></a>
+                            <a class="btn-delete-ai-image bg-light"><i class="fas fa-trash-alt fs-26 cursor-pointer"></i></a>
                         </div>
                     </div>
                 </div>
@@ -136,6 +137,17 @@
 
 @section('script')
 <script>
+    $(document).ready(function() {
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                toastr.error('{{ $error }}');
+            @endforeach
+        @endif
+
+        @if(session('success'))
+            toastr.success('{{ session('success') }}');
+        @endif
+    });
 function previewImage(event, index) {
     const reader = new FileReader();
     reader.onload = function(){
@@ -150,7 +162,6 @@ $(document).ready(function() {
         uniqueIndex++;
         const newItem =`
             <div class="col list-unstyled d-flex align-items-center flex-wrap mb-3 gap-3 div-ai-image">
-                <i class="fas fa-grip-vertical text-info cursor-move fs-26"></i>
                 <div class="rounded-3 me-2 no-drag-title" style="
                     width: 250px;
                     height: 100%;
@@ -177,7 +188,7 @@ $(document).ready(function() {
                         <input type="hidden" name="images[${uniqueIndex}][id]">
 
                         <input type="file" name="images[${uniqueIndex}][file]" id="image-input-${uniqueIndex}" onchange="previewImage(event, ${uniqueIndex})">
-                        <a class="btn-delete-ai-image bg-light"><i class="fas fa-trash-alt fs-26"></i></a>
+                        <a class="btn-delete-ai-image bg-light"><i class="fas fa-trash-alt fs-26 cursor-pointer"></i></a>
                     </div>
                 </div>
             </div>
@@ -188,7 +199,8 @@ $(document).ready(function() {
         if ($('.div-ai-image').length > 1) {
             $(this).closest('.div-ai-image').remove();
         } else {
-            alert('Phải có ít nhất một ảnh.');
+            toastr.error('Phải có ít nhất một ảnh');
+
         }
     });
 
@@ -218,93 +230,14 @@ $(document).ready(function() {
         if ($('.form-group.d-flex.align-items-center.mb-3').length > 1) {
             $(this).closest('.form-group').remove();
         } else {
-            alert('Phải có ít nhất một khoảng thời gian.');
+            toastr.error('Phải có ít nhất một khoảng thời gian');
+
         }
     });
 
     });
         
-    // var csrfToken = $('meta[name="csrf-token"]').attr('content');
-    // $('#btn-save-ai').click(function () {
-    //     openModalConfirm("Bạn có muốn tạo mới không?", function () {
-    //         var action = $('#form-ai-store').attr('action');
-    //         var formData = new FormData($('#form-ai-store')[0]);
-    //         $.ajax({
-    //             type: 'POST',
-    //             url: action,
-    //             data: formData,
-    //             contentType: false,
-    //             processData: false,
-    //             headers: {
-    //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //             },
-    //             success: function(response) {
-    //                 $("#message-err").empty();
-    //                 toastr.success(response.message);
-    //                 setTimeout(function() {
-    //                     window.location.href = document.referrer;
-    //                 }, 3000);
-    //             },
-    //             error: function(xhr, status, error) {
-    //                 var validateErrors = xhr.responseJSON.errors;
-    //                 $("#message-err").empty();
-    //                 for (const [key, value] of Object.entries(validateErrors)) {
-    //                     $("#message-err").append(`${value}<br>`);
-    //                 }
-    //             }
-    //         });
-    //     })
-    // });
-    // function openModalConfirm(title, handleConfirmOke) {
-    //   Swal.fire({
-    //     title: title,
-    //     icon: "question",
-    //     showCancelButton: true,
-    //     confirmButtonColor: "#3085d6",
-    //     cancelButtonColor: "#d33",
-    //     confirmButtonText: "保存",
-    //     cancelButtonText: "キャンセル",
-    //     reverseButtons: true,
-    //     animation: true,
-    //     showLoaderOnDeny: true,
-    //     customClass: {
-    //       title: 'title-sweet',
-    //       cancelButton: 'btn-cancel-sweetalert w-120px',
-    //       confirmButton: 'btn-confirm-sweetalert w-120px',
-    //     }
-    //   }).then((result) => {
-    //     if (result.isConfirmed) {
-    //       handleConfirmOke()
-    //     }
-    //   });
-    // }
-    // $('.sort-data-pr-title').sortable({
-    //     cancel: '.no-drag-title',
-    //     update: function() {
-    //     var sortedItems = $(this).find('.sortable-data-pr-title');
-    //     var orderData = [];
-    //     sortedItems.each(function(index) {
-    //         var itemId = $(this).attr('data-id');
-    //         orderData.push({
-    //             id: itemId,
-    //             order: index + 1 
-    //         });
-    //     });
-    //     $.ajax({
-    //         url: url,
-    //         type: 'POST',
-    //         data: {
-    //             orderData: orderData,
-    //             _token: '{{ csrf_token() }}'
-    //         },
-    //         success: function(response) {
-    //         },
-    //         error: function(error) {
-    //         }
-    //     });
-    //     }
-    // });
-
+    
     //Select2
     $(document).ready(function() {
         function formatGuide(guide) {

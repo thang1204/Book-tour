@@ -118,4 +118,21 @@ class BookingController extends Controller
         }
         return response()->json(['success' => false], 404);
     }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $bookings = Booking::with(['tour.area', 'tour.hotel', 'tour.vehicle', 'tour.guide'])
+            ->when($query, function ($queryBuilder, $query) {
+                return $queryBuilder->whereHas('tour', function ($q) use ($query) {
+                    $q->where('name', 'like', '%' . $query . '%');
+                })
+                ->orWhere('order_code', 'like', '%' . $query . '%')
+                ->orWhere('payment_status', 'like', '%' . $query . '%');
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+            return view('bookings.index_admin', compact('bookings'));
+    }
 }

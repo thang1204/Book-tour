@@ -51,6 +51,17 @@
 @section('script')
 <script>
     $(document).ready(function() {
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                toastr.error('{{ $error }}');
+            @endforeach
+        @endif
+
+        @if(session('success'))
+            toastr.success('{{ session('success') }}');
+        @endif
+    });
+    $(document).ready(function() {
         function formatDriver(driver) {
             if (!driver.id) {
                 return driver.text;

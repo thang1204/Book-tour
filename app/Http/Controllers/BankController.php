@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bank;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class BankController extends Controller
@@ -11,6 +12,21 @@ class BankController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $user = Auth::user();
+            
+            if ($user && $user->role !== 1) {
+                session()->flash('error', 'Bạn không có quyền truy cập.');
+                return redirect()->route('home');
+            }
+
+            return $next($request);
+        });
+    }
+    
     public function index()
     {
         $banks = Bank::all();

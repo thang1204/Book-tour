@@ -61,17 +61,17 @@
             
         </div>
         <div class="col-4 book-tour">
-            <h1 class="mt-5">Lịch Trình và Giá Tour</h1>
+            <h1 class="mb-4 text-center text-bold">Lịch Trình và Giá Tour</h1>
             <form id="booking-form" action="{{ route('bookings.store') }}" method="POST" onsubmit="return validateForm()">
                 @csrf
                 <input type="hidden" name="tour_id" value="{{ $tour->id }}">
             
                 <div class="form-group">
                     <label>Chọn ngày đi</label>
-                    <select name="tour_dates">
+                    <select name="tour_dates" class="form-select-date form-select-lg">
                         @foreach($tour->tourDates as $tourDate)
                             <option value="{{ $tourDate->start_date }}|{{ $tourDate->end_date }}">
-                                Ngày đi: {{ $tourDate->start_date }} -> {{ $tourDate->end_date }}
+                                Ngày đi: {{ $tourDate->start_date }} -> Ngày về: {{ $tourDate->end_date }}
                             </option>
                         @endforeach
                     </select>

@@ -2,13 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Storage;
-
 use App\Models\TourGuide;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class TourGuideController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $user = Auth::user();
+            
+            if ($user && $user->role !== 1) {
+                session()->flash('error', 'Bạn không có quyền truy cập.');
+                return redirect()->route('home');
+            }
+
+            return $next($request);
+        });
+    }
+    
     public function index()
     {
         $tourGuides = TourGuide::all();

@@ -22,37 +22,19 @@ class TourController extends Controller
     /**
      * Display a listing of the resource.
      */
-    // public function __construct()
-    // {
-    //     $this->middleware(function ($request, $next) {
-    //         $currentRouteName = $request->route()->getName();
+    public function __construct()
+{
+    $this->middleware(function ($request, $next) {
+        $user = Auth::user();
+        
+        if ($user && $user->role !== 1) {
+            session()->flash('error', 'Bạn không có quyền truy cập.');
+            return redirect()->route('home');
+        }
 
-    //         // Nếu route là 'index', cho phép truy cập mà không cần đăng nhập
-    //         if ($currentRouteName === 'index') {
-    //             return $next($request);
-    //         }
-
-    //         // Kiểm tra xác thực người dùng
-    //         if (!Auth::check()) {
-    //             // Đặt thông báo vào session
-    //             session()->flash('error', 'Bạn cần đăng nhập.');
-    //             // Chuyển hướng về trang login
-    //             return redirect()->route('login');
-    //         }
-
-    //         $user = Auth::user();
-
-    //         // Kiểm tra xem người dùng có role = 1 không
-    //         if ($user->role !== 1) {
-    //             // Đặt thông báo vào session
-    //             session()->flash('error', 'Bạn không có quyền truy cập.');
-    //             // Chuyển hướng về trang home
-    //             return redirect()->route('home');
-    //         }
-
-    //         return $next($request);
-    //     });
-    // }
+        return $next($request);
+    })->except('show');
+}
 
     public function index()
     {

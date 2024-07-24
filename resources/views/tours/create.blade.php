@@ -120,8 +120,8 @@
                         position: absolute;
                         top: 50%;
                         left: 50%;
-                        width: 100%;
-                        height: 100%;
+                        width: 130%;
+                        height: 130%;
                         object-fit: contain;
                         transform: translate(-50%, -50%);">
                     </div>
@@ -179,8 +179,8 @@
                         position: absolute;
                         top: 50%;
                         left: 50%;
-                        width: 100%;
-                        height: 100%;
+                        width: 130%;
+                        height: 130%;
                         object-fit: contain;
                         transform: translate(-50%, -50%);
                         ">

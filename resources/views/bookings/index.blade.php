@@ -26,7 +26,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($bookings as $booking)
+                @foreach($bookings as $index => $booking)
                     <tr>
                         {{-- <td>{{ $booking->tour->name }}</td> --}}
                         <td>{{ optional($booking->tour)->name }}</td>
@@ -53,10 +53,28 @@
                             @endif
                         </td>
                         <td>
-                            <form action="{{ route('bookings.destroy', $booking->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn hủy tour này không?');">
+                            <button type="button" class="btn btn-danger" id="showCancelModal{{ $index }}">Hủy</button>
+
+                            <div class="modal fade" id="cancelConfirmationModal{{ $index }}" tabindex="-1" role="dialog" aria-labelledby="cancelConfirmationModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header justify-content-center">
+                                            <h5 class="modal-title" id="cancelConfirmationModalLabel">Xác nhận hủy tour</h5>
+                                        </div>
+                                        <div class="modal-body justify-content-center">
+                                            <h6 class="text-center">Bạn có chắc chắn muốn hủy tour này không?</h6>
+                                        </div>
+                                        <div class="modal-footer justify-content-center">
+                                            <button type="button" class="btn btn-secondary" id="close{{ $index }}" data-dismiss="modal">Hủy</button>
+                                            <button type="button" class="btn btn-primary confirmCancel" data-id="{{ $index }}">Đồng ý</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <form action="{{ route('bookings.destroy', $booking->id) }}" method="POST" style="display:none;" id="cancelForm{{ $index }}">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Hủy</button>
                             </form>
                         </td>
                     </tr>
@@ -76,6 +94,22 @@
         @if(session('success'))
             toastr.success('{{ session('success') }}');
         @endif
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        @foreach($bookings as $index => $booking)
+            document.getElementById(`showCancelModal{{ $index }}`).addEventListener('click', function() {
+                $(`#cancelConfirmationModal{{ $index }}`).modal('show');
+            });
+
+            document.querySelector(`#cancelConfirmationModal{{ $index }} .confirmCancel`).addEventListener('click', function() {
+                const form = document.getElementById(`cancelForm{{ $index }}`);
+                form.submit();
+            });
+            document.querySelector(`#close{{ $index }}`).addEventListener('click', function() {
+                $(`#cancelConfirmationModal{{ $index }}`).modal('hide');
+            });
+        @endforeach
     });
 </script>
 @endsection

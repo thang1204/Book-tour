@@ -84,11 +84,11 @@ a{
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 100%;
-    height: 100%;
+    width: 130%;
+    height: 130%;
     object-fit: contain;
     transform: translate(-50%, -50%);
-    transition: transform 0.3s ease; /* Add transition for smooth zoom effect */
+    transition: transform 0.3s ease;
 }
 
 .item-tour:hover .item-tour-image img {
@@ -193,25 +193,25 @@ a{
 
 .btn-book-now {
     display: inline-block;
-    padding: 10px 20px; /* Khoảng cách bên trong nút */
-    font-size: 16px; /* Kích thước chữ */
-    font-weight: bold; /* Đậm chữ */
-    color: #fff; /* Màu chữ trắng */
-    background-color: #007bff; /* Màu nền xanh */
-    border: none; /* Không viền */
-    border-radius: 5px; /* Bo góc */
-    text-align: center; /* Căn giữa chữ */
-    text-decoration: none; /* Không gạch chân */
-    cursor: pointer; /* Con trỏ chuột thành tay */
-    transition: background-color 0.3s ease; /* Hiệu ứng chuyển đổi màu nền */
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold; 
+    color: #fff; 
+    background-color: #007bff;
+    border: none; 
+    border-radius: 5px; 
+    text-align: center; 
+    text-decoration: none; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
 }
 
 .btn-book-now:hover {
-    background-color: #0056b3; /* Màu nền khi hover */
+    background-color: #0056b3 /* Màu nền khi hover */
 }
 
 .btn-book-now:active {
-    background-color: #004494; /* Màu nền khi nhấn */
+    background-color: #004494; 
 }
 
 .btn-book-now:focus {
@@ -289,7 +289,7 @@ a{
 }
 .action-button {
     display: inline-block;
-    margin-left: 10px; /* Điều chỉnh khoảng cách giữa các nút */
+    margin-left: 10px; 
     font-size: 16px;
     color: #555;
     transition: color 0.3s;
@@ -376,7 +376,7 @@ tr:nth-child(even) {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    background-color: #f8f9fa; /* Màu nền của footer */
+    background-color: #f8f9fa; 
 }
 
 .footer-logo img {
@@ -458,50 +458,50 @@ footer {
 
 
 .modal-header {
-    background-color: #131142; /* Màu nền */
-    color: white; /* Màu chữ */
-    border-bottom: none; /* Không có viền */
+    background-color: #131142;
+    color: white; 
+    border-bottom: none; 
 }
 
 /* Modal title */
 .modal-title {
-    font-weight: bold; /* Chữ đậm */
-    font-size: 1.5rem; /* Kích thước chữ */
+    font-weight: bold;
+    font-size: 1.5rem; 
 }
 
 /* Modal body */
 .modal-body {
-    padding: 20px; /* Khoảng cách bên trong */
+    padding: 20px; 
 }
 
-/* Modal footer buttons */
+
 .modal-footer .btn {
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Hiệu ứng chuyển đổi */
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .modal-footer .btn-secondary {
-    background-color: #6c757d; /* Màu nền nút hủy */
+    background-color: #6c757d; 
 }
 
 .modal-footer .btn-primary {
-    background-color: #131142; /* Màu nền nút đồng ý */
+    background-color: #131142; 
 }
 
-/* Hiệu ứng hover */
+
 .modal-footer .btn:hover {
-    background-color: #131142; /* Màu nền khi hover */
-    transform: scale(1.05); /* Phóng to một chút khi hover */
+    background-color: #131142; 
+    transform: scale(1.05);
 }
 
 .modal-dialog {
     display: flex;
-    align-items: center; /* Căn giữa theo chiều dọc */
-    justify-content: center; /* Căn giữa theo chiều ngang */
-    height: 80%; /* Để đảm bảo nó chiếm đủ chiều cao */
+    align-items: center;
+    justify-content: center; 
+    height: 80%;
 }
 
 .modal-content {
-    margin: auto; /* Đảm bảo modal content nằm giữa */
+    margin: auto; 
 }
 
 .btn-tour{
@@ -543,4 +543,65 @@ footer {
 .swiper-button-prev:after,
 .swiper-button-next:after{
     color: white !important;
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}
+
+#guide {
+    height: 50px !important;
+}
+
+.status-badge {
+    font-size: 26px;
+}
+
+.payment-status {
+    width: 200px;
+    font-size: 16px;
+}
+
+.payment-status option[value="unpaid"] {
+    color: #6c757d;
+    background-color: #f8f9fa;
+}
+
+.payment-status option[value="deposit"] {
+    color: #856404;
+    background-color: #fff3cd;
+}
+
+.payment-status option[value="paid"] {
+    color: #155724;
+    background-color: #d4edda;
+}
+
+.form-select-pay {
+    font-size: 16px;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    border: 1px solid #ced4da;
+}
+
+.form-select-pay option {
+    padding: 0.5rem;
+}
+
+
+.w-150px{
+    width: 150px !important;
+    flex: none !important;
+}
+
+.form-select-date {
+    width: 100%; 
+    font-size: 16px;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    border: 1px solid #ced4da; 
+}
+
+.form-select-date option {
+    padding: 0.5rem; 
 }

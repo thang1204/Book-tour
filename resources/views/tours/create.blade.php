@@ -7,14 +7,15 @@
         @csrf
         @method('post')
         <div class="d-flex align-items-center justify-content-between">
-            <a href="{{ route('tour.index') }}" class="btn-create-ai" id="btn-back-ai"><i class="fas fa-long-arrow-alt-left"></i>&nbsp; Trở lại</a>
-            <button data-url="" class="btn-create-ai" id="btn-save-ai">Tạo mới</button>
+            <a href="{{ route('tour.index') }}" class="btn btn-tour" id="btn-back-ai"><i class="fas fa-long-arrow-alt-left"></i>&nbsp; Trở lại</a>
+            <button data-url="" class="btn btn-tour" id="btn-save-ai">Tạo mới</button>
         </div>
+        
         <div id="message-err" class="text-danger mt-4"></div> 
-        <div class="form-group pt-3">
+        <div class="form-group">
             <label for="name-tour" class="control-label text-muted mb-0">Tên Tour<span class="text-danger">*</span></label>
             <div class="">
-                <input type="text" name="name" id="name-tour" class="form-control" placeholder="" value="">
+                <input type="text" name="name" id="name-tour" class="form-control" placeholder="" value="{{ old('name') }}">
             </div>
         </div>
         
@@ -25,8 +26,9 @@
         <div class="form-group">
             <label for="area" class="control-label text-muted mb-0">Khu vực tour</label>
             <select name="area" class="form-control" id="area">
+                <option value="">Chọn Khu vực tour</option>
                 @foreach($areas as $area)
-                    <option value="{{ $area->id }}">{{ $area->name }}</option>
+                    <option value="{{ $area->id }}" {{ old('area') == $area->id ? 'selected' : '' }}>{{ $area->name }}</option>
                 @endforeach
             </select>
         </div>
@@ -34,8 +36,9 @@
         <div class="form-group">
             <label for="hotel" class="control-label text-muted mb-0">Khách sạn</label>
             <select name="hotel" class="form-control" id="hotel">
+                <option value="">Chọn Khách sạn</option>
                 @foreach($hotels as $hotel)
-                    <option value="{{ $hotel->id }}">{{ $hotel->name }}</option>
+                    <option value="{{ $hotel->id }}" {{ old('hotel') == $hotel->id ? 'selected' : '' }}>{{ $hotel->name }}</option>
                 @endforeach
             </select>
         </div>
@@ -45,7 +48,7 @@
             <select name="vehicle" class="form-control" id="vehicle">
                 <option value="">Chọn Phương Tiện</option>
                 @foreach($vehicles as $vehicle)
-                    <option value="{{ $vehicle->id }}">{{ $vehicle->type }} {{ $vehicle->model }}</option>
+                    <option value="{{ $vehicle->id }}" {{ old('vehicle') == $vehicle->id ? 'selected' : '' }}>{{ $vehicle->type }} {{ $vehicle->model }}</option>
                 @endforeach
             </select>
         </div>
@@ -54,9 +57,8 @@
             <label for="guide" class="control-label text-muted mb-0">Hướng dẫn viên</label>
             <select name="guide" class="form-control" id="guide">
                 <option value="">Chọn Hướng dẫn viên</option>
-
                 @foreach($guides as $guide)
-                    <option value="{{ $guide->id }}" data-img-src="{{ asset('storage/' . $guide->avatar) }}" {{ old('guide_id') == $guide->id ? 'selected' : '' }}>
+                    <option value="{{ $guide->id }}" data-img-src="{{ asset('storage/' . $guide->avatar) }}" {{ old('guide') == $guide->id ? 'selected' : '' }}>
                         {{ $guide->name }}
                     </option>
                 @endforeach
@@ -64,37 +66,45 @@
         </div>
 
         <div id="date-ranges-section">
-            <div class="form-group d-flex align-items-center mb-3" id="date-range-0">
+            @php
+                $oldStartDates = old('start_date', []);
+                $oldEndDates = old('end_date', []);
+            @endphp
+            @for ($i = 0; $i < max(count($oldStartDates), 1); $i++)
+            <div class="form-group d-flex align-items-center mb-3" id="date-range-{{ $i }}">
                 <div class="me-3">
-                    <label for="start-date-0" class="control-label text-muted mb-0">Ngày bắt đầu</label>
-                    <input type="date" name="start_date[]" id="start-date-0" class="form-control" value="">
+                    <label for="start-date-{{ $i }}" class="control-label text-muted mb-0">Ngày bắt đầu</label>
+                    <input type="date" name="start_date[]" id="start-date-{{ $i }}" class="form-control" value="{{ old('start_date.' . $i) }}">
                 </div>
                 <div class="me-3">
-                    <label for="end-date-0" class="control-label text-muted mb-0">Ngày kết thúc</label>
-                    <input type="date" name="end_date[]" id="end-date-0" class="form-control" value="">
+                    <label for="end-date-{{ $i }}" class="control-label text-muted mb-0">Ngày kết thúc</label>
+                    <input type="date" name="end_date[]" id="end-date-{{ $i }}" class="form-control" value="{{ old('end_date.' . $i) }}">
                 </div>
-                <a class="btn-delete-date-range text-danger fs-26" style="cursor:pointer;">&times;</a>
+                <a class="btn-delete-date-range text-danger fs-26 mt-4" style="cursor:pointer;">&times;</a>
             </div>
+            @endfor
         </div>
-        <a id="btn-add-date-range" class="btn btn-secondary mb-3">＋Thêm khoảng thời gian</a>
+        <a id="btn-add-date-range" class="btn btn-tour">＋Thêm khoảng thời gian</a>
         <div class="form-group">
-            <label for="price" class="control-label text-muted mb-0">Giá Tour</label>
-            <input type="text" name="price" id="price" class="form-control" oninput="formatCurrency(this)">
+            <label for="price" class="form-label text-muted mb-0">Giá Tour</label>
+            <div class="input-group no-wrap">
+                <input type="text" name="price" id="price" class="form-control w-150px p-0 ps-3" value="{{ old('price') }}" oninput="formatCurrency(this)">
+                <span class="input-group-text">000VND</span>
+            </div>
         </div>
         <div class="form-group">
             <label for="number_of_participants" class="control-label text-muted mb-0">Số lượng người</label>
-            <input type="number" name="number_of_participants" class="form-control">
+            <input type="number" name="number_of_participants" class="form-control" value="{{ old('number_of_participants') }}">
         </div>
         
         <hr>
         <div>
             <div class="d-flex align-items-center justify-content-between">
                 <h3>Ảnh tour</h3>
-                <a class="btn-add-image fs-16 mb-3" id="btn-add-img-tour">＋Thêm ảnh</a>
+                <a class="btn btn-tour" id="btn-add-img-tour">＋Thêm ảnh</a>
             </div>
             <div class="form-group list-item-image sort-data-pr-title">
                 <div class="sortable-data-pr-title col list-unstyled d-flex align-items-center flex-wrap mb-3 gap-3 div-ai-image">
-                    <i class="fas fa-grip-vertical text-info cursor-move fs-26"></i>
                     <div class="rounded-3 me-2 no-drag-title" style="
                         width: 250px;
                         height: 100%;
@@ -110,15 +120,15 @@
                         position: absolute;
                         top: 50%;
                         left: 50%;
-                        width: 100%;
-                        height: 100%;
+                        width: 130%;
+                        height: 130%;
                         object-fit: contain;
                         transform: translate(-50%, -50%);">
                     </div>
                     <div class="col list-unstyled d-flex flex-wrap gap-2 no-drag-title">
                         <div class="col-12 d-flex justify-content-between">
                             <input type="file" name="image[]" id="image-input-0" onchange="previewImage(event, 0)">
-                            <a class="btn-delete-ai-image bg-light"><i class="fas fa-trash-alt fs-26"></i></a>
+                            <a class="btn-delete-ai-image bg-light mt-3"><i class="fas fa-trash-alt fs-26 cursor-pointer"></i></a>
                         </div>
                     </div>
                 </div>
@@ -130,49 +140,59 @@
 
 @section('script')
 <script>
-function previewImage(event, index) {
-    const reader = new FileReader();
-    reader.onload = function(){
-        const output = document.getElementById('image-preview-' + index);
-        output.src = reader.result;
-    };
-    reader.readAsDataURL(event.target.files[0]);
-}
-$(document).ready(function() {
-    let imageIndex = 1;
-    $("#btn-add-img-tour").on("click", function () {
-        const newItem =`
-            <div class="col list-unstyled d-flex align-items-center flex-wrap mb-3 gap-3 div-ai-image">
-                <i class="fas fa-grip-vertical text-info cursor-move fs-26"></i>
-                <div class="rounded-3 me-2 no-drag-title" style="
-                    width: 250px;
-                    height: 100%;
-                    background-size: contain !important;
-                    background-position: center !important;
-                    background-repeat: no-repeat !important;
-                    background-color: #dfdfdf !important;
-                    border-radius: 8px;
-                    aspect-ratio: 1.91 !important;
-                    position: relative;
-                    overflow: hidden;">
-                    <img id="image-preview-${imageIndex}" src="/assets/img/common/noimage/no_image_base64.png" alt="" style="
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    width: 100%;
-                    height: 100%;
-                    object-fit: contain;
-                    transform: translate(-50%, -50%);
-                    ">
-                </div>
-                <div class="col list-unstyled d-flex flex-wrap gap-2 no-drag-title">
-                    <div class="col-12 d-flex justify-content-between">
-                        <input type="file" name="image[]" id="image-input-${imageIndex}" onchange="previewImage(event, ${imageIndex})">
-                        <a class="btn-delete-ai-image bg-light"><i class="fas fa-trash-alt fs-26"></i></a>
+    $(document).ready(function() {
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                toastr.error('{{ $error }}');
+            @endforeach
+        @endif
+
+        @if(session('success'))
+            toastr.success('{{ session('success') }}');
+        @endif
+    });
+    function previewImage(event, index) {
+        const reader = new FileReader();
+        reader.onload = function(){
+            const output = document.getElementById('image-preview-' + index);
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+    $(document).ready(function() {
+        let imageIndex = 1;
+        $("#btn-add-img-tour").on("click", function () {
+            const newItem =`
+                <div class="col list-unstyled d-flex align-items-center flex-wrap mb-3 gap-3 div-ai-image">
+                    <div class="rounded-3 me-2 no-drag-title" style="
+                        width: 250px;
+                        height: 100%;
+                        background-size: contain !important;
+                        background-position: center !important;
+                        background-repeat: no-repeat !important;
+                        background-color: #dfdfdf !important;
+                        border-radius: 8px;
+                        aspect-ratio: 1.91 !important;
+                        position: relative;
+                        overflow: hidden;">
+                        <img id="image-preview-${imageIndex}" src="/assets/img/common/noimage/no_image_base64.png" alt="" style="
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        width: 130%;
+                        height: 130%;
+                        object-fit: contain;
+                        transform: translate(-50%, -50%);
+                        ">
+                    </div>
+                    <div class="col list-unstyled d-flex flex-wrap gap-2 no-drag-title">
+                        <div class="col-12 d-flex justify-content-between">
+                            <input type="file" name="image[]" id="image-input-${imageIndex}" onchange="previewImage(event, ${imageIndex})">
+                            <a class="btn-delete-ai-image bg-light"><i class="fas fa-trash-alt fs-26 cursor-pointer"></i></a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        `;
+            `;
         $(".list-item-image").append(newItem);
         imageIndex++;
     });
@@ -180,13 +200,14 @@ $(document).ready(function() {
         if ($('.div-ai-image').length > 1) {
             $(this).closest('.div-ai-image').remove();
         } else {
-            alert('Phải có ít nhất một ảnh.');
+            toastr.error('Phải có ít nhất một ảnh');
+
         }
     });
 
 
     $(document).ready(function() {
-        let dateIndex = 1;
+        let dateIndex = {{ count($oldStartDates) }};
         $("#btn-add-date-range").on("click", function () {
             const newDateRange = `
                 <div class="form-group d-flex align-items-center mb-3" id="date-range-${dateIndex}">
@@ -198,7 +219,7 @@ $(document).ready(function() {
                         <label for="end-date-${dateIndex}" class="control-label text-muted mb-0">Ngày kết thúc</label>
                         <input type="date" name="end_date[]" id="end-date-${dateIndex}" class="form-control" value="">
                     </div>
-                    <a class="btn-delete-date-range text-danger fs-26" style="cursor:pointer;">&times;</a>
+                    <a class="btn-delete-date-range text-danger fs-26 mt-4" style="cursor:pointer;">&times;</a>
                 </div>
             `;
             $("#date-ranges-section").append(newDateRange);
@@ -209,92 +230,10 @@ $(document).ready(function() {
             if ($('.form-group.d-flex.align-items-center.mb-3').length > 1) {
                 $(this).closest('.form-group').remove();
             } else {
-                alert('Phải có ít nhất một khoảng thời gian.');
+                toastr.error('Phải có ít nhất một khoảng thời gian');
             }
         });
     });
-
-        
-    // var csrfToken = $('meta[name="csrf-token"]').attr('content');
-    // $('#btn-save-ai').click(function () {
-    //     openModalConfirm("Bạn có muốn tạo mới không?", function () {
-    //         var action = $('#form-ai-store').attr('action');
-    //         var formData = new FormData($('#form-ai-store')[0]);
-    //         $.ajax({
-    //             type: 'POST',
-    //             url: action,
-    //             data: formData,
-    //             contentType: false,
-    //             processData: false,
-    //             headers: {
-    //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //             },
-    //             success: function(response) {
-    //                 $("#message-err").empty();
-    //                 toastr.success(response.message);
-    //                 setTimeout(function() {
-    //                     window.location.href = document.referrer;
-    //                 }, 3000);
-    //             },
-    //             error: function(xhr, status, error) {
-    //                 var validateErrors = xhr.responseJSON.errors;
-    //                 $("#message-err").empty();
-    //                 for (const [key, value] of Object.entries(validateErrors)) {
-    //                     $("#message-err").append(`${value}<br>`);
-    //                 }
-    //             }
-    //         });
-    //     })
-    // });
-    // function openModalConfirm(title, handleConfirmOke) {
-    //   Swal.fire({
-    //     title: title,
-    //     icon: "question",
-    //     showCancelButton: true,
-    //     confirmButtonColor: "#3085d6",
-    //     cancelButtonColor: "#d33",
-    //     confirmButtonText: "保存",
-    //     cancelButtonText: "キャンセル",
-    //     reverseButtons: true,
-    //     animation: true,
-    //     showLoaderOnDeny: true,
-    //     customClass: {
-    //       title: 'title-sweet',
-    //       cancelButton: 'btn-cancel-sweetalert w-120px',
-    //       confirmButton: 'btn-confirm-sweetalert w-120px',
-    //     }
-    //   }).then((result) => {
-    //     if (result.isConfirmed) {
-    //       handleConfirmOke()
-    //     }
-    //   });
-    // }
-    // $('.sort-data-pr-title').sortable({
-    //     cancel: '.no-drag-title',
-    //     update: function() {
-    //     var sortedItems = $(this).find('.sortable-data-pr-title');
-    //     var orderData = [];
-    //     sortedItems.each(function(index) {
-    //         var itemId = $(this).attr('data-id');
-    //         orderData.push({
-    //             id: itemId,
-    //             order: index + 1 
-    //         });
-    //     });
-    //     $.ajax({
-    //         url: url,
-    //         type: 'POST',
-    //         data: {
-    //             orderData: orderData,
-    //             _token: '{{ csrf_token() }}'
-    //         },
-    //         success: function(response) {
-    //         },
-    //         error: function(error) {
-    //         }
-    //     });
-    //     }
-    // });
 
 
     $(document).ready(function() {

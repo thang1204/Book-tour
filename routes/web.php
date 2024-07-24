@@ -21,6 +21,7 @@ Route::resource('areanew', AreaNewController::class);
 
 Route::resource('/tour', TourController::class);
 Route::get('/about', [AboutController::class, 'index'])->name('about');
+Route::get('bookings/search', [BookingController::class, 'search'])->name('bookings.search');
 
 Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

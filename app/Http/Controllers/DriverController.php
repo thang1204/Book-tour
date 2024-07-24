@@ -4,9 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\Driver;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DriverController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $user = Auth::user();
+            
+            if ($user && $user->role !== 1) {
+                session()->flash('error', 'Bạn không có quyền truy cập.');
+                return redirect()->route('home');
+            }
+
+            return $next($request);
+        });
+    }
+    
     public function index()
     {
         $drivers = Driver::all();

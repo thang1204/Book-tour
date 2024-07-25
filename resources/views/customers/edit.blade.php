@@ -55,6 +55,17 @@
 
 @section('script')
 <script>
+    $(document).ready(function() {
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                toastr.error('{{ $error }}');
+            @endforeach
+        @endif
+
+        @if(session('success'))
+            toastr.success('{{ session('success') }}');
+        @endif
+    });
     document.getElementById('avatar').addEventListener('change', function(event) {
         const [file] = this.files;
         if (file) {

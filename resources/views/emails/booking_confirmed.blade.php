@@ -52,16 +52,19 @@
             <h1>Cảm ơn bạn đã đặt tour với chúng tôi!</h1>
             <h2>THANH TOÁN CHUYỂN KHOẢN</h2>
         </div>
-        <div class="content">
+        <div class="content text-center row justify-content-center">
             <div>
                 <ul>
                     <p>Chi tiết đặt tour của bạn:</p>
                     <li>Mã tour: <span class="highlight">{{ $booking->order_code}}</span></li>
                     <li>Tour: {{ $booking->tour->name }}</li>
+                    <li>Địa điểm xuất phát: {{ $booking->tour->area->name }}</li>
                     <li>Ngày khởi hành: {{ $booking->start_date }}</li>
+                    <li>Ngày kết thúc: {{ $booking->end_date }}</li>
                     <li>Số người lớn: {{ $booking->number_of_adults }}</li>
                     <li>Số trẻ em: {{ $booking->number_of_children }}</li>
-                    <li>Tổng giá: {{ $booking->total_price }}</li>
+                    <li>Tổng giá: {{ number_format($booking->total_price, 0, '.', '.') . '.000 VNĐ' }}</li>
+                    
                 </ul>
             </div>
             <div class="qr-code">

@@ -84,6 +84,14 @@
 
 </div>
 <script>
+    @if(session('error'))
+        toastr.error("{{ session('error') }}");
+        <?php session()->forget('error'); ?>
+    @endif
+    @if(session('success'))
+        toastr.success("{{ session('success') }}");
+        <?php session()->forget('success'); ?>
+    @endif
     $(document).ready(function() {
         @if($errors->any())
             @foreach($errors->all() as $error)

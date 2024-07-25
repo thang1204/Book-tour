@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1 class="text-center">Thống Kê Đặt Tour</h1>
+    <h1 class="text-center mt-3">Thống Kê Đặt Tour</h1>
 
     <div class="mb-3">
         <form method="GET" action="{{ route('statistics.index') }}" class="d-inline">
@@ -30,7 +30,7 @@
             <p><strong>Tổng số lượt đặt tour:</strong> {{ $totalBookings }}</p>
             <p><strong>Tổng số người lớn:</strong> {{ $totalAdults }}</p>
             <p><strong>Tổng số trẻ em:</strong> {{ $totalChildren }}</p>
-            <p><strong>Tổng doanh thu:</strong> {{ number_format($totalRevenue) }} VND</p>
+            <p><strong>Tổng doanh thu:</strong> {{ number_format($totalRevenue) }},000VND</p>
         </div>
     </div>
 

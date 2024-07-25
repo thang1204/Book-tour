@@ -16,8 +16,16 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::all();
-        return view('customers.index', compact('customers'));
+        $user = auth()->user();
+
+        if ($user->role === 1) {
+            $customers = Customer::all();
+            session()->flash('success', 'Cập nhật thông tin tài khoản thành công');
+            return view('customers.index', compact('customers'));
+        } else {
+            session()->flash('success', 'Cập nhật thông tin tài khoản thành công');
+            return redirect()->route('home');
+        }
     }
 
     public function create()
@@ -30,8 +38,8 @@ class CustomerController extends Controller
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
             'address' => 'nullable|string',
-            'phone' => 'nullable|string|max:15',
-            'gender' => 'nullable|in:male,female,other',
+            'phone' => 'required|string|max:15',
+            'gender' => 'required|in:male,female,other',
             'date_of_birth' => 'nullable|date',
             'avatar' => 'nullable|image|max:2048',
         ]);
@@ -44,7 +52,7 @@ class CustomerController extends Controller
 
         Customer::create($validated);
 
-        return redirect()->route('customers.index')->with('success', 'Customer created successfully.');
+        return redirect()->route('customers.index')->with('success', 'Khách hàng đã được tạo thành công.');
     }
 
     public function edit(Customer $customer)
@@ -60,8 +68,8 @@ class CustomerController extends Controller
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
             'address' => 'nullable|string',
-            'phone' => 'nullable|string|max:15',
-            'gender' => 'nullable|in:male,female,other',
+            'phone' => 'required|string|max:15',
+            'gender' => 'required|in:male,female,other',
             'date_of_birth' => 'nullable|date',
             'avatar' => 'nullable|image|max:2048',
         ]);
@@ -75,7 +83,7 @@ class CustomerController extends Controller
 
         $customer->update($validated);
 
-        return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
+        return redirect()->route('customers.index')->with('success', 'Khách hàng đã được cập nhật thành công.');
     }
 
     public function destroy(Customer $customer)

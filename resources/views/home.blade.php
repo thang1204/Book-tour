@@ -64,6 +64,17 @@
 </div>
 <script>
     $(document).ready(function() {
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                toastr.error('{{ $error }}');
+            @endforeach
+        @endif
+
+        @if(session('success'))
+            toastr.success('{{ session('success') }}');
+        @endif
+    });
+    $(document).ready(function() {
         $('.btn-book-now').click(function(event) {
             event.preventDefault();
             const url = $(this).attr('data-url');

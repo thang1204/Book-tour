@@ -69,10 +69,10 @@
                         width="50">
 
                     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                        <div class="offcanvas-header">
-                            <h5 id="offcanvasRightLabel">
+                        <div class="offcanvas-header pb-0">
+                            <h5 id="offcanvasRightLabel m-0">
                                 <a href="{{ route('customers.edit', Auth::user()->customer->id) }}" class="avatar avatar_hover">
-                                    <img src="{{ Auth::user()->customer->avatar ? \Storage::url(Auth::user()->customer->avatar) : asset('images/avatar_default.jpg') }}" alt="Avatar" width="50">
+                                    <img class="avatar" src="{{ Auth::user()->customer->avatar ? \Storage::url(Auth::user()->customer->avatar) : asset('images/avatar_default.jpg') }}" alt="Avatar" width="50">
                                     {{ Auth::user()->name }}
                                 </a>
                             </h5>

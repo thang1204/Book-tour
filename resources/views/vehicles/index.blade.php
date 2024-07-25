@@ -33,7 +33,7 @@
                     @endif
                 </td>
                 <td>
-                    <a href="{{ route('vehicles.edit', $vehicle->id) }}" class="btn btn-primary btn-sm">Sửa</a>
+                    <a href="{{ route('vehicles.edit', $vehicle->id) }}" class="btn btn-warning btn-sm">Sửa</a>
                     <button type="button" class="btn btn-danger btn-sm" id="showDeleteModal{{ $index }}">Xóa</button>
 
                     <!-- Delete Confirmation Modal -->

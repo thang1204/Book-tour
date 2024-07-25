@@ -31,7 +31,7 @@
             <label for="bio">Tiểu Sử</label>
             <textarea class="form-control" id="bio" name="bio">{{ $tourGuide->bio }}</textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Cập Nhật</button>
+        <button type="submit" class="btn btn-tour mt-3">Cập Nhật</button>
     </form>
 </div>
 @endsection

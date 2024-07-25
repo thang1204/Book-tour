@@ -32,7 +32,7 @@
                 @endforeach
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Thêm</button>
+        <button type="submit" class="btn btn-tour mt-3">Thêm</button>
     </form>
 </div>
 @endsection

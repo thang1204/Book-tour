@@ -25,7 +25,7 @@
             <label for="phone">Điện Thoại</label>
             <input type="text" class="form-control" id="phone" name="phone" value="{{ $driver->phone }}" required>
         </div>
-        <button type="submit" class="btn btn-primary">Cập Nhật</button>
+        <button type="submit" class="btn btn-tour mt-3">Cập Nhật</button>
     </form>
 </div>
 @endsection

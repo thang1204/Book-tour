@@ -26,7 +26,7 @@
             <label for="description">Mô Tả</label>
             <textarea style="height:100px;" class="form-control" id="description" name="description">{{ $hotel->description }}</textarea>
         </div>
-        <button type="submit" class="btn btn-primary mt-3">Cập Nhật</button>
+        <button type="submit" class="btn btn-tour mt-3">Cập Nhật</button>
     </form>
 </div>
 @endsection

@@ -25,7 +25,7 @@
             <label for="description">Mô Tả</label>
             <textarea class="form-control" id="description" name="description"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Thêm</button>
+        <button type="submit" class="btn btn-tour mt-3">Thêm</button>
     </form>
 </div>
 @endsection

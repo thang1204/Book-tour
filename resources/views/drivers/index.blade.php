@@ -19,9 +19,9 @@
                     <td>{{ $driver->name }}</td>
                     <td>
                         @if($driver->avatar)
-                            <img src="{{ asset('storage/' . $driver->avatar) }}" alt="Avatar" width="100">
+                            <img src="{{ asset('storage/' . $driver->avatar) }}" alt="Avatar" width="100" class="avatar">
                         @else
-                            <img src="https://via.placeholder.com/100" alt="Default Avatar" width="100">
+                            <img src="https://via.placeholder.com/100" alt="Default Avatar" width="100" class="avatar">
                         @endif
                     </td>
                     <td>{{ $driver->phone }}</td>

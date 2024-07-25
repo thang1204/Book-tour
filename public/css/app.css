@@ -60,7 +60,7 @@ a{
 .list-tour{
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-evenly;
     gap: 30px;
 }
 .item-tour{
@@ -604,4 +604,8 @@ footer {
 
 .form-select-date option {
     padding: 0.5rem; 
+}
+
+.select2-selection{
+    height: 35px !important;
 }

@@ -20,7 +20,7 @@
             <label for="phone">Điện Thoại</label>
             <input type="text" class="form-control" id="phone" name="phone" required>
         </div>
-        <button type="submit" class="btn btn-primary">Thêm</button>
+        <button type="submit" class="btn btn-tour mt-3">Thêm</button>
     </form>
 </div>
 @endsection

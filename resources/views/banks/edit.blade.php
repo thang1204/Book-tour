@@ -25,7 +25,7 @@
         <div id="qr-preview">
             <img id="qr-image" src="{{ Storage::url($bank->qr_code_path) }}" alt="QR Code Preview" style="{{ $bank->qr_code_path ? 'display:block;' : 'display:none;' }}">
         </div>
-            <button type="submit" class="btn-tour">Cập Nhật</button>
+            <button type="submit" class="btn-tour mt-3">Cập Nhật</button>
     </form>
 </div>
 

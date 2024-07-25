@@ -33,7 +33,7 @@
                 @endforeach
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Lưu</button>
+        <button type="submit" class="btn btn-tour mt-3">Lưu</button>
     </form>
 </div>
 @endsection
@@ -47,7 +47,7 @@
             }
             var baseUrl = driver.element.getAttribute('data-img-src');
             var $driver = $(
-                '<span><img src="' + baseUrl + '" class="img-circle mr-2" style="width: 30px; height: 30px;" /> ' + driver.text + '</span>'
+                '<span><img src="' + baseUrl + '" class="avatar img-circle mr-2" style="width: 30px; height: 30px;" /> ' + driver.text + '</span>'
             );
             return $driver;
         };
